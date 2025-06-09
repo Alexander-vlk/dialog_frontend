@@ -6,10 +6,26 @@
 <nav>
     <ul>
         <li>
-            <a href="" class="text-xl hover:underline">Главная</a>
+            <RouterLink
+                :to="{ name: 'main' }"
+                class="text-xl hover:underline"
+                v-slot="{ isActive }"
+            >
+                <span :class="{ 'text-blue-500 hover:underline' : isActive }">
+                    Главная
+                </span>
+            </RouterLink>
         </li>
         <li>
-            <a href="" class="text-xl hover:underline">Личный кабинет</a>
+            <RouterLink
+                :to="{ name: 'profile' }"
+                class="text-xl hover:underline"
+                v-slot="{ isActive }"
+            >
+                <span :class="{ 'text-blue-500 hover:underline' : isActive }">
+                    Личный кабинет
+                </span>
+            </RouterLink>
         </li>
         <li>
             <a href="" class="text-xl hover:underline">Форум</a>
