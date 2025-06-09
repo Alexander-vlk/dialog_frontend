@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div
-        class="w-xl flex items-center gap-x-5 border py-3 px-4 rounded-full"
+        class="md:w-xl flex items-center gap-x-5 border py-3 px-4 rounded-xl"
         ref="clickableBox"
         @click="handleClickOutside"
         @click.stop="isActive = true"
