@@ -4,7 +4,7 @@
 
 <template>
     <a href="" class="text-primary text-2xl font-bold">
-        <span class="text-red-700">Dia</span><span class="text-blue-700">Log</span>
+        <span class="text-red-500">Dia</span><span class="text-blue-700">Log</span>
     </a>
 </template>
 
