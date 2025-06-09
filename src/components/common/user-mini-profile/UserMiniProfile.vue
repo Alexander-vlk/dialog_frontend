@@ -41,17 +41,17 @@ const statusColor = computed(() => {
 
         <div class="flex flex-col">
             <div class="text-sm text-gray-500">@{{ user.username }}</div>
-                <div class="text-base font-semibold leading-tight">
-                    {{ user.fullName }}
-                </div>
-                <div class="text-sm mt-1 flex items-center gap-1">
-                    <span
-                    :class="statusColor"
-                    class="w-2 h-2 rounded-full inline-block"
-                    >
-                    </span>
-                    <span class="text-gray-600">{{ user.status }}</span>
-                </div>
+            <div class="text-base font-semibold leading-tight">
+                {{ user.fullName }}
+            </div>
+            <div class="text-sm mt-1 flex items-center gap-1">
+                <span
+                :class="statusColor"
+                class="w-2 h-2 rounded-full inline-block"
+                >
+                </span>
+                <span class="text-gray-600">{{ user.status }}</span>
+            </div>
         </div>
     </div>
 </template>
