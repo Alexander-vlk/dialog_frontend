@@ -6,31 +6,31 @@
 <nav>
     <ul>
         <li>
-            <a href="" class="text-xl">Главная</a>
+            <a href="" class="text-xl hover:underline">Главная</a>
         </li>
         <li>
-            <a href="" class="text-xl">Личный кабинет</a>
+            <a href="" class="text-xl hover:underline">Личный кабинет</a>
         </li>
         <li>
-            <a href="" class="text-xl">Форум</a>
+            <a href="" class="text-xl hover:underline">Форум</a>
         </li>
         <li>
-            <a href="" class="text-xl">Семейный доступ</a>
+            <a href="" class="text-xl hover:underline">Семейный доступ</a>
         </li>
         <li>
-            <a href="" class="text-xl">О нас</a>
+            <a href="" class="text-xl hover:underline">О нас</a>
         </li>
         <li>
-            <a href="" class="text-xl">Отзывы</a>
+            <a href="" class="text-xl hover:underline">Отзывы</a>
         </li>
         <li>
-            <a href="" class="text-xl">База знаний</a>
+            <a href="" class="text-xl hover:underline">База знаний</a>
         </li>
         <li>
-            <a href="" class="text-xl">Политика конфиденциальности</a>
+            <a href="" class="text-xl hover:underline">Политика конфиденциальности</a>
         </li>
         <li>
-            <a href="" class="text-xl">FAQ</a>
+            <a href="" class="text-xl hover:underline">FAQ</a>
         </li>
     </ul>
 </nav>
