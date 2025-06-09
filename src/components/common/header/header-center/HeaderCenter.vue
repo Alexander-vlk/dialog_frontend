@@ -8,7 +8,7 @@ import UserAuth from "@/components/common/user-auth/UserAuth.vue";
         <SearchField />
     </div>
     <div class="m-5">
-        <UserAuth />
+        <UserAuth :showUserMiniProfile="false" />
     </div>
 </template>
 

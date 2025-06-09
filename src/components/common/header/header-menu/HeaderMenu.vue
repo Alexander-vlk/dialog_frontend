@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Bars3Icon } from '@heroicons/vue/24/solid'
 import { ref } from 'vue'
-import Menu from "@/components/common/header/nav-menu/Menu.vue";
+import Menu from "@/components/common/header/header-menu/Menu.vue";
 
 
 const isMenuOpen = ref(false)
