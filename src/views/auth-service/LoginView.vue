@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import {AUTHORIZATION_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE} from "@/constants/errorMessages.ts"
+import {STATUS_CODES} from "@/constants/statusCodes.ts";
 import api from '@/plugins/axios/axios.ts'
-import FloatingError from "@/components/common/errors/FloatingError.vue";
+import FloatingError from "@/components/common/errors/FloatingError.vue"
 
-import type {UserLoginCredentials} from "@/types/authTypes.ts";
+import type {UserLoginCredentials} from "@/types/authTypes.ts"
 
 
 document.title = 'Авторизация'
@@ -26,15 +28,13 @@ const sendCredentials = async () => {
         )
     }
     catch (error) {
-        if (!error.isAxiosError) {
-            console.error('Неизвестная ошибка', error)
-            errorMessage.value = 'Произошла неизвестная ошибка.'
+        if (error.response?.status === STATUS_CODES.UNAUTHORIZED) {
+            errorMessage.value = AUTHORIZATION_ERROR_MESSAGE
             return
         }
-        if (error.response?.status === 401) {
-            errorMessage.value = error.response.data?.detail || 'Неверный логин или пароль.'
-            return
-        }
+
+        errorMessage.value = UNKNOWN_ERROR_MESSAGE
+        return
     }
 }
 </script>
