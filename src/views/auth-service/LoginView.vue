@@ -1,0 +1,97 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+import api from '@/plugins/axios/axios.ts'
+import FloatingError from "@/components/common/errors/FloatingError.vue";
+
+import type {UserLoginCredentials} from "@/types/authTypes.ts";
+
+
+document.title = 'Авторизация'
+
+const credentials = ref<UserLoginCredentials>({
+    username: '',
+    password: '',
+    remember: false,
+})
+
+const errorMessage = ref('')
+
+const sendCredentials = async () => {
+    errorMessage.value = ''
+    try {
+        await api.post(
+            'auth_service/token/',
+            credentials.value,
+        )
+    }
+    catch (error) {
+        if (!error.isAxiosError) {
+            console.error('Неизвестная ошибка', error)
+            errorMessage.value = 'Произошла неизвестная ошибка.'
+            return
+        }
+        if (error.response?.status === 401) {
+            errorMessage.value = error.response.data?.detail || 'Неверный логин или пароль.'
+            return
+        }
+    }
+}
+</script>
+
+<template>
+    <div class="flex justify-center items-center min-h-[80dvh]">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold text-primary text-center mb-6">Вход в аккаунт</h2>
+
+            <form class="space-y-4" @submit.prevent="sendCredentials">
+
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Имя пользователя</label>
+                    <input
+                        v-model="credentials.username"
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autofocus
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+                    <input
+                        v-model="credentials.password"
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    >
+                </div>
+
+                <div class="flex justify-between items-center text-sm">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="mr-2" v-model="credentials.remember">
+                        Запомнить меня
+                    </label>
+                    <a href="#" class="text-primary hover:text-secondary hover:underline">Забыли пароль?</a>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition">
+                    Войти
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Нет аккаунта? <a href="/register/" class="text-primary hover:text-secondary hover:underline">Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+    <FloatingError :message="errorMessage" />
+</template>
+
+<style scoped>
+
+</style>
