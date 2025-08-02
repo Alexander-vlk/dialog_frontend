@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build: .
+    command: npm run dev
+    volumes:
+      - ./:/home/frontend
+      - /home/frontend/node_modules
+    ports:
+      - "8300:8300"
+    networks:
+      - dialog_network
+
+networks:
+  dialog_network:
+    external: true
