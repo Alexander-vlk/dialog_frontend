@@ -8,15 +8,30 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    vue(),
-    vueJsx(),
-    vueDevTools(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+    plugins: [
+        tailwindcss(),
+        vue(),
+        vueJsx(),
+        vueDevTools(),
+    ],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        },
     },
-  },
+    server: {
+        host: '0.0.0.0',
+        port: 8300,
+        strictPort: true,
+        open: false,
+        allowedHosts: ['dialog.com'],
+        watch: {
+            usePolling: true,
+        },
+        hmr: {
+            protocol: 'wss',
+            host: 'dialog.com',
+            clientPort: 443,
+        },
+    },
 })
