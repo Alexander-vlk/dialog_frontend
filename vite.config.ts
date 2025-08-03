@@ -24,6 +24,14 @@ export default defineConfig({
         port: 8300,
         strictPort: true,
         open: false,
-        allowedHosts: ['dialog.com']
+        allowedHosts: ['dialog.com'],
+        watch: {
+            usePolling: true,
+        },
+        hmr: {
+            protocol: 'wss',
+            host: 'dialog.com',
+            clientPort: 443,
+        },
     },
 })
