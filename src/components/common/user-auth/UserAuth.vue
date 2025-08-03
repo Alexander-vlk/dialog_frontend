@@ -6,7 +6,7 @@ import SystemRegistration from "@/components/common/user-auth/SystemRegistration
 import UserMiniProfile from "@/components/common/user-mini-profile/UserMiniProfile.vue";
 import ProfileButton from "@/components/common/user-auth/ProfileButton.vue";
 
-const isUserAuthenticated = ref(true)
+const isUserAuthenticated = ref(false)
 
 defineProps({
     showUserMiniProfile: Boolean,
@@ -22,7 +22,7 @@ defineProps({
             <ProfileButton />
         </div>
     </div>
-    <div v-else class="flex gap-x-2 mt-5">
+    <div v-else class="flex gap-x-2">
         <SystemLogin />
         <SystemRegistration />
     </div>
