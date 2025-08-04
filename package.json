@@ -20,6 +20,7 @@
     "@heroicons/vue": "^2.2.0",
     "@iconify/vue": "^5.0.0",
     "@tailwindcss/vite": "^4.1.8",
+    "@types/axios": "^0.9.36",
     "@vue-hero-icons/outline": "^1.7.2",
     "@vue-hero-icons/solid": "^1.7.2",
     "@vueuse/motion": "^3.0.3",
