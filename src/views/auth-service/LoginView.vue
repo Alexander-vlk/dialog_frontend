@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import {AUTHORIZATION_ERROR_MESSAGE, UNKNOWN_ERROR_MESSAGE} from "@/constants/errorMessages.ts"
+import {
+    ALREADY_AUTHENTICATED,
+    AUTHORIZATION_ERROR_MESSAGE,
+    UNKNOWN_ERROR_MESSAGE
+} from '@/constants/errorMessages.ts'
 import {STATUS_CODES} from "@/constants/statusCodes.ts";
 import api from '@/plugins/axios/axios.ts'
 import FloatingError from "@/components/common/errors/FloatingError.vue"
@@ -30,6 +34,10 @@ const sendCredentials = async () => {
     catch (error) {
         if (error.response?.status === STATUS_CODES.UNAUTHORIZED) {
             errorMessage.value = AUTHORIZATION_ERROR_MESSAGE
+            return
+        }
+        if (error.response?.status === STATUS_CODES.BAD_REQUEST) {
+            errorMessage.value = ALREADY_AUTHENTICATED
             return
         }
 
