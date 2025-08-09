@@ -5,8 +5,12 @@ import SystemLogin from "@/components/common/user-auth/SystemLogin.vue";
 import SystemRegistration from "@/components/common/user-auth/SystemRegistration.vue";
 import UserMiniProfile from "@/components/common/user-mini-profile/UserMiniProfile.vue";
 import ProfileButton from "@/components/common/user-auth/ProfileButton.vue";
+import { userAuthStore } from '@/stores/user.ts'
+
+const userStore = userAuthStore()
 
 const isUserAuthenticated = ref(false)
+isUserAuthenticated.value = userStore.isAuthenticated
 
 defineProps({
     showUserMiniProfile: Boolean,
