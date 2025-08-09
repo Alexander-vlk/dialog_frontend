@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+document.title = "Личный кабиет";
 </script>
 
 <template>
