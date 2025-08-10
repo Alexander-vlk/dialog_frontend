@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {ref} from "vue";
-
 import SystemLogin from "@/components/common/user-auth/SystemLogin.vue";
 import SystemRegistration from "@/components/common/user-auth/SystemRegistration.vue";
 import UserMiniProfile from "@/components/common/user-mini-profile/UserMiniProfile.vue";

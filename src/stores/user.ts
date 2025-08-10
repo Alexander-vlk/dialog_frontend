@@ -33,7 +33,7 @@ export const userAuthStore  = defineStore('auth', () => {
         accessToken,
         isAuthenticated,
         setAccessToken,
-        clearAccessToken,
         setUser,
+        logout,
     }
 })
