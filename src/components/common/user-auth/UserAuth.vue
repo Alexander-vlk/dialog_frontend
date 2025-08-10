@@ -9,16 +9,13 @@ import { userAuthStore } from '@/stores/user.ts'
 
 const userStore = userAuthStore()
 
-const isUserAuthenticated = ref(false)
-isUserAuthenticated.value = userStore.isAuthenticated
-
 defineProps({
     showUserMiniProfile: Boolean,
 })
 </script>
 
 <template>
-    <div v-if="isUserAuthenticated">
+    <div v-if="userStore.isAuthenticated">
         <div v-if="showUserMiniProfile" class="w-full">
             <UserMiniProfile />
         </div>

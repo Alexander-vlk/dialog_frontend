@@ -12,7 +12,7 @@ document.getElementById('menu-toggle')?.addEventListener('click', function() {
     <header class="bg-white shadow-md py-4 flex justify-center">
         <div class="mx-auto w-full flex justify-between items-center px-6">
             <Logo />
-            <div class="w-2xl hidden md:flex items-center gap-x-5">
+            <div class="w-2xl hidden lg:flex items-center gap-x-5">
                 <HeaderCenter />
             </div>
             <NavMenu />
