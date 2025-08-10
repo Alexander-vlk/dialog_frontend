@@ -1,5 +1,42 @@
 <script setup lang="ts">
+import axios from 'axios'
+import { ref } from 'vue'
 
+import api from '@/plugins/axios/axios.ts'
+import { userAuthStore } from '@/stores/user.ts'
+import FloatingError from '@/components/common/errors/FloatingError.vue'
+
+
+const userStore = userAuthStore()
+
+const errorMessage = ref('')
+
+function logoutUser() {
+    errorMessage.value = ''
+    if (!confirm('Вы уверены?')) {
+        return
+    }
+
+    try {
+        api.post(
+            'auth_service/logout/',
+            {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${userStore.accessToken}`
+                }
+            }
+        )
+    }
+    catch (error: unknown) {
+        if (!axios.isAxiosError(error)) {
+            console.error(error)
+            return
+        }
+        errorMessage.value = 'Ошибка!'
+    }
+    userStore.logout()
+}
 </script>
 
 <template>
@@ -48,7 +85,11 @@
         <li>
             <a href="" class="text-xl hover:underline">FAQ</a>
         </li>
+        <li v-if="userStore.isAuthenticated">
+            <button @click="logoutUser" class="text-xl text-red-700 hover:underline cursor-pointer">Выйти</button>
+        </li>
     </ul>
+    <FloatingError :message="errorMessage" />
 </nav>
 </template>
 

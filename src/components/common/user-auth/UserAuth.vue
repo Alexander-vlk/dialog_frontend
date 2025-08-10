@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {ref} from "vue";
-
 import SystemLogin from "@/components/common/user-auth/SystemLogin.vue";
 import SystemRegistration from "@/components/common/user-auth/SystemRegistration.vue";
 import UserMiniProfile from "@/components/common/user-mini-profile/UserMiniProfile.vue";
 import ProfileButton from "@/components/common/user-auth/ProfileButton.vue";
+import { userAuthStore } from '@/stores/user.ts'
 
-const isUserAuthenticated = ref(false)
+const userStore = userAuthStore()
 
 defineProps({
     showUserMiniProfile: Boolean,
@@ -14,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <div v-if="isUserAuthenticated">
+    <div v-if="userStore.isAuthenticated">
         <div v-if="showUserMiniProfile" class="w-full">
             <UserMiniProfile />
         </div>

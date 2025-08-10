@@ -3,15 +3,13 @@ export type User = {
     username: string,
     first_name: string,
     last_name: string,
-    email: string,
-}
-export type UserProfile = {
     patronymicName: string,
     phoneNumber: string,
-    imageUrl: string,
+    email: string,
     gender: string,
     birthDate: string,
     diagnosisDate: string,
     diabetesType: string,
     treatmentType: string,
+    imageUrl: string,
 }

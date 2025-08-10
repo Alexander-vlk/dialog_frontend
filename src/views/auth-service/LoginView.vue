@@ -13,6 +13,8 @@ import FloatingError from "@/components/common/errors/FloatingError.vue"
 
 import type {UserLoginCredentials} from "@/types/authTypes.ts"
 import axios from 'axios'
+import { userAuthStore } from '@/stores/user.ts'
+import fetchUserData from '@/utils/common/fetchUserData.ts'
 
 
 document.title = 'Авторизация'
@@ -28,16 +30,13 @@ const errorMessage = ref('')
 const sendCredentials = async () => {
     errorMessage.value = ''
 
+    let accessToken = undefined
     try {
         const response = await api.post(
             'auth_service/token/',
             credentials.value,
         )
-
-        if (response.status === STATUS_CODES.MOVED_PERMANENTLY) {
-            await router.push({name: 'profile'})
-            return
-        }
+        accessToken = response.data.access
     }
     catch (error: unknown) {
         if (!axios.isAxiosError(error)) {
@@ -50,7 +49,6 @@ const sendCredentials = async () => {
             errorMessage.value = UNKNOWN_ERROR_MESSAGE
             return
         }
-
         if (error.response.status === STATUS_CODES.UNAUTHORIZED) {
             errorMessage.value = AUTHORIZATION_ERROR_MESSAGE
             return
@@ -60,6 +58,22 @@ const sendCredentials = async () => {
             return
         }
     }
+    if (!accessToken) {
+        console.error('Unable to set access token. Try again later.')
+        return
+    }
+
+    const userStore = userAuthStore()
+    userStore.setAccessToken(accessToken)
+
+    const userData = await fetchUserData()
+    if (!userData) {
+        console.error('Unable to set user data. Try again later.')
+        return
+    }
+    userStore.setUser(userData)
+
+    await router.push({name: 'profile'})
 }
 </script>
 
