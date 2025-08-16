@@ -71,7 +71,15 @@ function logoutUser() {
             <a href="" class="text-xl hover:underline">Семейный доступ</a>
         </li>
         <li>
-            <a href="" class="text-xl hover:underline">О нас</a>
+            <RouterLink
+                :to="{ name: 'about'}"
+                class="text-xl hover:underline"
+                v-slot="{ isActive }"
+            >
+                <span :class="{ 'text-blue-500 hover:underline' : isActive }">
+                О нас
+                </span>
+            </RouterLink>
         </li>
         <li>
             <a href="" class="text-xl hover:underline">Отзывы</a>
@@ -80,7 +88,15 @@ function logoutUser() {
             <a href="" class="text-xl hover:underline">База знаний</a>
         </li>
         <li>
-            <a href="" class="text-xl hover:underline">Политика конфиденциальности</a>
+            <RouterLink
+                :to="{ name: 'privacyPolicy'}"
+                class="text-xl hover:underline"
+                v-slot="{ isActive }"
+            >
+                <span :class="{ 'text-blue-500 hover:underline' : isActive }">
+                    Политика конфиденциальности
+                </span>
+            </RouterLink>
         </li>
         <li>
             <a href="" class="text-xl hover:underline">FAQ</a>
