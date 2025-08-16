@@ -20,3 +20,8 @@ export type Rate = {
     user_info: string,
     text: string,
 }
+
+export type FAQ = {
+    question: string,
+    answer: string,
+}

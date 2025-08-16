@@ -4,6 +4,8 @@ import SwiperBlock from "@/components/main-page/Swiper.vue";
 import AdvantagesBlock from "@/components/main-page/Advantages.vue";
 import Functions from '@/components/main-page/Functions.vue'
 import Rates from '@/components/main-page/Rates.vue'
+import FAQ from '@/components/main-page/FAQ.vue'
+import CallToAction from '@/components/main-page/CallToAction.vue'
 
 document.title = 'Главная'
 </script>
@@ -21,6 +23,12 @@ document.title = 'Главная'
     </section>
     <section class="w-full max-w-6xl mx-auto my-5">
         <Rates />
+    </section>
+    <section class="w-full max-w-6xl mx-auto my-5">
+        <FAQ />
+    </section>
+    <section class="mx-auto px-6 py-12">
+        <CallToAction />
     </section>
 </template>
 
