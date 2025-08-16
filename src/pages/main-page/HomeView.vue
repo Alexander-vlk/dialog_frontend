@@ -3,6 +3,7 @@ import HeroActionBlock from "@/components/main-page/HeroAction.vue";
 import SwiperBlock from "@/components/main-page/Swiper.vue";
 import AdvantagesBlock from "@/components/main-page/Advantages.vue";
 import Functions from '@/components/main-page/Functions.vue'
+import Rates from '@/components/main-page/Rates.vue'
 
 document.title = 'Главная'
 </script>
@@ -17,6 +18,9 @@ document.title = 'Главная'
     </section>
     <section class="w-full max-w-7xl mx-auto my-5">
         <AdvantagesBlock />
+    </section>
+    <section class="w-full max-w-6xl mx-auto my-5">
+        <Rates />
     </section>
 </template>
 

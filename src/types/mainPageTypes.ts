@@ -15,3 +15,8 @@ export type Feature = {
     description: string,
     image_url: string,
 }
+
+export type Rate = {
+    user_info: string,
+    text: string,
+}
