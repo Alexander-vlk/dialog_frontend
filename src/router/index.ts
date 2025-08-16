@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import HomeView from "@/pages/main-page/HomeView.vue";
 import authRoutes from '@/router/auth-service/authRoutes.ts'
 import cabinetRoutes from '@/router/cabinet/cabinetRoutes.ts'
