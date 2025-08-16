@@ -12,7 +12,7 @@ const user: User = {
     fullName: 'Иванов Иван Иванович',
     username: 'testov',
     status: 'в сети',
-    avatarUrl: 'http://localhost:8000/media/images/stub.png'
+    avatarUrl: 'https://dialog.com/media/images/stub.png'
 }
 
 const statusColor = computed(() => {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Header from "@/components/common/header/Header.vue";
 import Footer from '@/components/common/footer/Footer.vue'
+import PageLoader from '@/components/ui/PageLoader.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import Footer from '@/components/common/footer/Footer.vue'
         <RouterView />
     </section>
     <Footer />
+    <PageLoader />
 </template>
 
 <style scoped>
