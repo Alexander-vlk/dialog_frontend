@@ -32,7 +32,7 @@ onMounted(async () => {
             <h4 class="text-xl font-semibold text-blue-500 mb-2">{{ advantage.title }}</h4>
             <p class="text-gray-600">{{ advantage.description }}</p>
             <div>
-                <img :src="advantage.image_url" :alt="advantage.title" />
+                <img :src="advantage.image_url" :alt="advantage.title" class="rounded-2xl" />
             </div>
         </div>
     </div>
