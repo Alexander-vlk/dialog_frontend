@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 
-import api from '@/plugins/axios/axios.ts'
+import api from '@/services/axios.ts'
 import type {Advantage} from "@/types/mainPageTypes.ts";
 
 const advantages = ref<Array<Advantage>>([])

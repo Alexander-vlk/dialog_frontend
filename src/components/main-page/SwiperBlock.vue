@@ -4,7 +4,7 @@ import {Swiper, SwiperSlide} from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import api from '@/plugins/axios/axios.ts'
+import api from '@/services/axios.ts'
 import { backendUrl } from '@/constants/common.ts'
 import type {Slide} from "@/types/mainPageTypes.ts";
 

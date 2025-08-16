@@ -1,4 +1,4 @@
-import api from '@/plugins/axios/axios.ts'
+import api from '@/services/axios.ts'
 import { userAuthStore } from '@/stores/user.ts'
 import type { User } from '@/types/userTypes.ts'
 

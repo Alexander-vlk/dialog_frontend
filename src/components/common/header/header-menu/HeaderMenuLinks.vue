@@ -2,9 +2,9 @@
 import axios from 'axios'
 import { ref } from 'vue'
 
-import api from '@/plugins/axios/axios.ts'
+import api from '@/services/axios.ts'
 import { userAuthStore } from '@/stores/user.ts'
-import FloatingError from '@/components/common/errors/FloatingError.vue'
+import FloatingError from '@/components/ui/FloatingError.vue'
 
 
 const userStore = userAuthStore()

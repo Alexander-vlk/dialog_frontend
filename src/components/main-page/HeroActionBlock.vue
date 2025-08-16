@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import api from '@/plugins/axios/axios.ts'
+import api from '@/services/axios.ts'
 import {onMounted, reactive} from "vue";
 
 const heroActionBlock = reactive({

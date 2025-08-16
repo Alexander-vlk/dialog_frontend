@@ -8,8 +8,8 @@ import {
     UNKNOWN_ERROR_MESSAGE,
 } from '@/constants/errorMessages.ts'
 import {STATUS_CODES} from "@/constants/statusCodes.ts";
-import api from '@/plugins/axios/axios.ts'
-import FloatingError from "@/components/common/errors/FloatingError.vue"
+import api from '@/services/axios.ts'
+import FloatingError from "@/components/ui/FloatingError.vue"
 
 import type {UserLoginCredentials} from "@/types/authTypes.ts"
 import axios from 'axios'
