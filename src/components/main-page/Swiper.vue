@@ -28,7 +28,7 @@ onMounted(async () => {
             :slides-per-view="1"
             :space-between="20"
             :pagination="{ clickable: true }"
-            :autoplay="{ delay: 5000 }"
+            :autoplay="{ delay: 5000}"
             loop
             class="rounded-2xl shadow-lg"
         >

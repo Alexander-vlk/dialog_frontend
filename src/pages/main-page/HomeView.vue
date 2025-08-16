@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HeroActionBlock from "@/components/main-page/HeroActionBlock.vue";
-import SwiperBlock from "@/components/main-page/SwiperBlock.vue";
-import AdvantagesBlock from "@/components/main-page/AdvantagesBlock.vue";
+import HeroActionBlock from "@/components/main-page/HeroAction.vue";
+import SwiperBlock from "@/components/main-page/Swiper.vue";
+import AdvantagesBlock from "@/components/main-page/Advantages.vue";
 
 document.title = 'Главная'
 </script>
