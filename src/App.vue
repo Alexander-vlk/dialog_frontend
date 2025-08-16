@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Header from "@/components/common/header/Header.vue";
+import Footer from '@/components/common/footer/Footer.vue'
 </script>
 
 <template>
@@ -7,6 +8,7 @@ import Header from "@/components/common/header/Header.vue";
     <section>
         <RouterView />
     </section>
+    <Footer />
 </template>
 
 <style scoped>
