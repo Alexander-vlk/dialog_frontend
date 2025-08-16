@@ -9,3 +9,9 @@ export type Advantage = {
     image_url: string,
     order_num: number,
 }
+
+export type Feature = {
+    name: string,
+    description: string,
+    image_url: string,
+}
