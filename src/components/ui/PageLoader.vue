@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import api from '@/services/axios.ts'
-import Logo from '@/components/common/header/header-logo/Logo.vue'
 
 const isLoading = ref(true)
 const isErrorOccurred = ref(false)
