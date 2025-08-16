@@ -13,13 +13,13 @@ const currentYear = ref(new Date().getFullYear())
             <nav class="mt-4 md:mt-0">
                 <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
                     <li>
-                        <RouterLink :to="{ name: 'main'}" class="text-primary hover:underline transition">О нас</RouterLink>
+                        <RouterLink :to="{ name: 'about'}" class="text-primary hover:underline transition">О нас</RouterLink>
                     </li>
                     <li>
-                        <RouterLink :to="{ name: 'main' }" class="text-primary hover:underline transition">Политика конфиденциальности</RouterLink>
+                        <RouterLink :to="{ name: 'privacyPolicy' }" class="text-primary hover:underline transition">Политика конфиденциальности</RouterLink>
                     </li>
                     <li>
-                        <RouterLink :to="{ name: 'main' }" class="text-primary hover:underline transition">Контакты</RouterLink>
+                        <RouterLink :to="{ name: 'contacts' }" class="text-primary hover:underline transition">Контакты</RouterLink>
                     </li>
                 </ul>
             </nav>
