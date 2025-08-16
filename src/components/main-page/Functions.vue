@@ -27,6 +27,11 @@ onMounted(async () => {
         :pagination="{ clickable: true }"
         :modules="[Pagination]"
         loop
+        :breakpoints="{
+            320: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+        }"
         class="w-full max-w-7xl mx-auto py-10"
     >
         <SwiperSlide
