@@ -4,6 +4,7 @@ import {Swiper, SwiperSlide} from 'swiper/vue';
 
 import api from '@/services/axios.ts'
 import type {Feature} from "@/types/mainPageTypes.ts";
+import { Pagination } from 'swiper/modules'
 
 const features = ref<Array<Feature>>([])
 
@@ -24,6 +25,7 @@ onMounted(async () => {
         :slides-per-view="3"
         :space-between="50"
         :pagination="{ clickable: true }"
+        :modules="[Pagination]"
         loop
         class="w-full max-w-7xl mx-auto py-10"
     >
