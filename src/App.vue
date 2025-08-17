@@ -6,7 +6,9 @@ import PageLoader from '@/components/ui/PageLoader.vue'
 
 <template>
     <Header />
-    <section>
+    <section
+        class="min-h-[80lvh]"
+    >
         <RouterView />
     </section>
     <Footer />

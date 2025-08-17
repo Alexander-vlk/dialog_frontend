@@ -51,12 +51,11 @@
 }
 
 body {
-    min-height: 100vh;
+    min-height: 100lvh;
     color: var(--color-text);
     background: var(--color-background);
     line-height: 1.6;
     font-family: "Helvetica Neue", sans-serif;
-    font-size: 15px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
