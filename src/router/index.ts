@@ -25,6 +25,11 @@ const routes = [
         name: 'contacts',
         component: () => import('@/pages/ContactsView.vue'),
     },
+    {
+        path: '/not-found',
+        name: 'notFound',
+        component: () => import('@/pages/NotFound.vue'),
+    },
     ...authRoutes,
     ...cabinetRoutes,
 ]
