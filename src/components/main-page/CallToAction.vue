@@ -27,9 +27,9 @@ onMounted(async () => {
         <h1 class="text-4xl font-bold text-gray-900">{{ callToActionBlock.action_text }}</h1>
         <p class="text-gray-600 mt-4 text-lg">{{ callToActionBlock.short_description }}</p>
         <div class="mt-6">
-            <a href="" class="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 shadow-md transition">
+            <RouterLink :to="{ name: 'register' }" class="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 shadow-md transition">
                 {{ callToActionBlock.button_text }}
-            </a>
+            </RouterLink>
         </div>
     </section>
 </template>
