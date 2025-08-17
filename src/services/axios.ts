@@ -30,7 +30,7 @@ api.interceptors.response.use(
         const originalRequest = error.config
         console.log(error)
 
-        if (!error.response.status !== STATUS_CODES.UNAUTHORIZED) {
+        if (error.response.status !== STATUS_CODES.UNAUTHORIZED) {
             return Promise.reject(error)
         }
 
