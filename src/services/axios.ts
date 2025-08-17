@@ -41,7 +41,7 @@ api.interceptors.response.use(
         isRefreshing = true
         const authStore = userAuthStore()
         const response = await api.post('auth_service/refresh/')
-        if (!response.status === STATUS_CODES.UNAUTHORIZED) {
+        if (response.status === STATUS_CODES.UNAUTHORIZED) {
             authStore.logout()
             return Promise.reject(error)
         }
