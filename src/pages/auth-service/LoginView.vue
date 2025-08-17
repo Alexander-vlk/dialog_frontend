@@ -122,7 +122,7 @@ const sendCredentials = async () => {
             </form>
 
             <p class="text-center text-sm text-gray-600 mt-4">
-                Нет аккаунта? <a href="/register/" class="text-primary hover:text-secondary underline hover:text-blue-700">Зарегистрироваться</a>
+                Нет аккаунта? <RouterLink :to="{ name: 'register' }" class="text-primary hover:text-secondary underline hover:text-blue-700">Зарегистрироваться</RouterLink>
             </p>
         </div>
     </div>
