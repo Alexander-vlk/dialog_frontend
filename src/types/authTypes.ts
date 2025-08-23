@@ -20,4 +20,5 @@ export type NewUser = {
     password1: string,
     password2: string,
     remember: boolean,
+    agreedWithPolicy: boolean,
 }

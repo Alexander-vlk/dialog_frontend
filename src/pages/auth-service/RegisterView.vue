@@ -200,10 +200,22 @@ const sendNewUserData = () => {}
                 </div>
 
                 <div>
-                    <div class="flex items-center text-sm mb-2">
+                    <div class="flex items-center text-sm">
                         <label class="flex items-center hover:cursor-pointer">
                             <input type="checkbox" v-model="newUser.remember" class="mr-2" />
                             Запомнить меня
+                        </label>
+                    </div>
+                    <div class="flex items-center text-sm mb-2">
+                        <label class="flex items-center hover:cursor-pointer">
+                            <input type="checkbox" v-model="newUser.agreedWithPolicy" class="mr-2" />
+                            Согласен с&nbsp;
+                            <RouterLink
+                                :to="{ name: 'privacyPolicy'}"
+                                class="hover:underline text-blue-500"
+                            >
+                                политикой конфиденциальности
+                            </RouterLink>
                         </label>
                     </div>
 
