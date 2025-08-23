@@ -16,7 +16,7 @@ export type NewUser = {
     diagnosisDate: string,
     diabetesType: string,
     treatmentType: string,
-    imageUrl: string,
+    imageFile: File | null,
     password1: string,
     password2: string,
     remember: boolean,

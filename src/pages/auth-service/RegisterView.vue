@@ -2,6 +2,11 @@
 import FloatingError from '@/components/ui/FloatingError.vue'
 import { ref } from 'vue'
 import type { NewUser } from '@/types/authTypes.ts'
+import { registerUser } from '@/services/auth-service/registerUser.ts'
+import axios from 'axios'
+import { userAuthStore } from '@/stores/user.ts'
+import fetchUserData from '@/utils/common/fetchUserData.ts'
+import router from '@/router'
 
 document.title = 'Регистрация'
 
@@ -19,23 +24,54 @@ const newUser = ref<NewUser>({
     diagnosisDate: '',
     diabetesType: '',
     treatmentType: '',
-    imageUrl: '',
+    imageFile: null,
     remember: false,
+    agreedWithPolicy: false,
 })
 
-const errorMessage = ref()
+const errorMessage = ref('')
 
-const sendNewUserData = () => {}
+const sendNewUserData = async () => {
+    // Отправить данные нового польозователя
+    let accessToken = undefined
+    try {
+        const response = await registerUser(newUser.value)
+        accessToken = response.data.access
+    }
+    catch (error) {
+        if (!axios.isAxiosError(error)) {
+            console.error(error)
+            return
+        }
+        errorMessage.value = error.response.data
+    }
+    if (!accessToken) {
+        console.error('Unable to set access token. Try again later.')
+        return
+    }
+
+    const userStore = userAuthStore()
+    userStore.setAccessToken(accessToken)
+
+    const userData = await fetchUserData()
+    if (!userData) {
+        console.error('Unable to set user data. Try again later.')
+        return
+    }
+    userStore.setUser(userData)
+
+    await router.push({name: 'profile'})
+}
 </script>
 
 <template>
     <div class="flex justify-center items-center min-h-[80lvh] my-5">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-5xl">
             <h2 class="text-2xl font-bold text-primary mb-6">Регистрация</h2>
-
             <form
-                class="space-y-4 md:grid grid-cols-2 gap-5"
+                class="space-y-4 md:grid grid-cols-2 md:gap-5"
                 @submit.prevent="sendNewUserData"
+                type="multipart/form-data"
             >
                 <div>
                     <div>
@@ -45,7 +81,7 @@ const sendNewUserData = () => {}
                             type="text"
                             id="username"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -56,7 +92,7 @@ const sendNewUserData = () => {}
                             type="password"
                             id="password1"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -67,7 +103,7 @@ const sendNewUserData = () => {}
                             type="password"
                             id="password2"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -78,7 +114,7 @@ const sendNewUserData = () => {}
                             type="email"
                             id="email"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -89,7 +125,7 @@ const sendNewUserData = () => {}
                             type="tel"
                             id="phoneNumber"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -99,11 +135,11 @@ const sendNewUserData = () => {}
                             v-model="newUser.gender"
                             id="gender"
                             required
-                            class="w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         >
                             <option value="">Выберите</option>
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
+                            <option value="MALE">Мужской</option>
+                            <option value="FEMALE">Женский</option>
                         </select>
                     </div>
 
@@ -114,7 +150,7 @@ const sendNewUserData = () => {}
                             type="date"
                             id="birthDate"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
                 </div>
@@ -127,7 +163,7 @@ const sendNewUserData = () => {}
                             type="text"
                             id="first_name"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
                     <div>
@@ -137,7 +173,7 @@ const sendNewUserData = () => {}
                             type="text"
                             id="last_name"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -147,7 +183,7 @@ const sendNewUserData = () => {}
                             v-model="newUser.patronymicName"
                             type="text"
                             id="patronymicName"
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -158,7 +194,7 @@ const sendNewUserData = () => {}
                             type="date"
                             id="diagnosisDate"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
@@ -168,7 +204,7 @@ const sendNewUserData = () => {}
                             v-model="newUser.diabetesType"
                             id="diabetesType"
                             required
-                            class="w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         >
                             <option value="">Выберите</option>
                             <option value="1">Тип 1</option>
@@ -184,17 +220,22 @@ const sendNewUserData = () => {}
                             type="text"
                             id="treatmentType"
                             required
-                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
 
                     <div>
-                        <label for="profile-image">Фото профиля</label>
+                        <label for="profile-image" class="block text-sm font-medium text-gray-700">
+                            Фото профиля
+                        </label>
                         <input
                             type="file"
                             name="profile-image"
                             id="profile-image"
-                            class="w-full px-4 py-2 text-sm border bg-blue-100 text-blue-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-pointer"
+                            class="w-full h-12 px-4 py-2 text-sm rounded-lg cursor-pointer text-blue-700
+                               file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
+                               file:text-sm file:font-semibold file:bg-blue-200 file:text-blue-800
+                               hover:file:bg-blue-300 hover:file:cursor-pointer"
                         >
                     </div>
                 </div>
