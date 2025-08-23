@@ -31,6 +31,11 @@ const newUser = ref<NewUser>({
 
 const errorMessage = ref('')
 
+function setImage(event: Event) {
+    const target = event.target as HTMLInputElement;
+    newUser.value.imageFile = target.files?.[0] ?? null;
+}
+
 const sendNewUserData = async () => {
     // Отправить данные нового польозователя
     let accessToken = undefined
@@ -229,6 +234,7 @@ const sendNewUserData = async () => {
                             Фото профиля
                         </label>
                         <input
+                            @change="setImage"
                             type="file"
                             name="profile-image"
                             id="profile-image"
