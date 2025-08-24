@@ -8,7 +8,7 @@ import { userAuthStore } from '@/stores/user.ts'
 import fetchUserData from '@/utils/common/fetchUserData.ts'
 import router from '@/router'
 import api from '@/services/axios.ts'
-import type { TreatmentType } from '@/types/cabinetTypes.ts'
+import type { DiabetesType, TreatmentType } from '@/types/cabinetTypes.ts'
 
 document.title = 'Регистрация'
 
@@ -31,6 +31,7 @@ const newUser = ref<NewUser>({
     agreedWithPolicy: false,
 })
 const treatmentTypes = ref<Array<TreatmentType>>([])
+const diabetesTypes = ref<Array<DiabetesType>>([])
 const errorMessage = ref('')
 
 function setImage(event: Event) {
@@ -39,8 +40,15 @@ function setImage(event: Event) {
 }
 
 async function getTreatmentTypes() {
+    // Получчить типы лечения
     const response = await api.get('cabinet/public/treatment-types/')
     treatmentTypes.value = response.data
+}
+
+async function getDiabetesTypes() {
+    // Получить типы диабета
+    const response = await api.get('cabinet/public/diabetes-types/')
+    diabetesTypes.value = response.data
 }
 
 const sendNewUserData = async () => {
@@ -76,8 +84,8 @@ const sendNewUserData = async () => {
 }
 
 onMounted(async () => {
-    const response = await api.get('cabinet/public/treatment-types/')
-    treatmentTypes.value = response.data
+    await getDiabetesTypes()
+    await getTreatmentTypes()
 })
 </script>
 
@@ -98,10 +106,10 @@ onMounted(async () => {
                             type="text"
                             id="username"
                             required
+                            autofocus
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="password1" class="block text-sm font-medium text-gray-700">Пароль <span class="text-red-700">*</span></label>
                         <input
@@ -112,7 +120,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="password2" class="block text-sm font-medium text-gray-700">Повторите пароль <span class="text-red-700">*</span></label>
                         <input
@@ -123,7 +130,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-700">*</span></label>
                         <input
@@ -134,7 +140,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Телефон <span class="text-red-700">*</span></label>
                         <input
@@ -145,7 +150,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="gender" class="block text-sm font-medium text-gray-700">Пол <span class="text-red-700">*</span></label>
                         <select
@@ -159,7 +163,6 @@ onMounted(async () => {
                             <option value="FEMALE">Женский</option>
                         </select>
                     </div>
-
                     <div>
                         <label for="birthDate" class="block text-sm font-medium text-gray-700">Дата рождения <span class="text-red-700">*</span></label>
                         <input
@@ -171,8 +174,17 @@ onMounted(async () => {
                         />
                     </div>
                 </div>
-
                 <div>
+                    <div>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700">Фамилия <span class="text-red-700">*</span></label>
+                        <input
+                            v-model="newUser.last_name"
+                            type="text"
+                            id="last_name"
+                            required
+                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                    </div>
                     <div>
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Имя <span class="text-red-700">*</span></label>
                         <input
@@ -184,17 +196,6 @@ onMounted(async () => {
                         />
                     </div>
                     <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Фамилия <span class="text-red-700">*</span></label>
-                        <input
-                            v-model="newUser.last_name"
-                            type="text"
-                            id="last_name"
-                            required
-                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
-                    </div>
-
-                    <div>
                         <label for="patronymicName" class="block text-sm font-medium text-gray-700">Отчество <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.patronymicName"
@@ -203,7 +204,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="diagnosisDate" class="block text-sm font-medium text-gray-700">Дата диагноза</label>
                         <input
@@ -214,7 +214,6 @@ onMounted(async () => {
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
                     </div>
-
                     <div>
                         <label for="diabetesType" class="block text-sm font-medium text-gray-700">Тип диабета</label>
                         <select
@@ -223,6 +222,25 @@ onMounted(async () => {
                             required
                             class="w-full h-12 px-4 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         >
+                            <option value="">Не указывать</option>
+                            <option
+                                v-for="(diabetesType, index) in diabetesTypes"
+                                :key="index"
+                                :value="diabetesType.slug"
+                            >
+                                {{ diabetesType.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="treatmentType" class="block text-sm font-medium text-gray-700">Тип лечения</label>
+                        <select
+                            v-model="newUser.treatmentType"
+                            id="treatmentType"
+                            required
+                            class="w-full h-12 px-4 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        >
+                            <option value="">Не указывать</option>
                             <option
                                 v-for="(treatmentType, index) in treatmentTypes"
                                 :key="index"
@@ -232,18 +250,6 @@ onMounted(async () => {
                             </option>
                         </select>
                     </div>
-
-                    <div>
-                        <label for="treatmentType" class="block text-sm font-medium text-gray-700">Тип лечения</label>
-                        <input
-                            v-model="newUser.treatmentType"
-                            type="text"
-                            id="treatmentType"
-                            required
-                            class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
-                    </div>
-
                     <div>
                         <label for="profile-image" class="block text-sm font-medium text-gray-700">
                             Фото профиля
@@ -260,7 +266,6 @@ onMounted(async () => {
                         >
                     </div>
                 </div>
-
                 <div>
                     <div class="flex items-center text-sm">
                         <label class="flex items-center hover:cursor-pointer">
@@ -280,14 +285,12 @@ onMounted(async () => {
                             </RouterLink>
                         </label>
                     </div>
-
                     <button
                         type="submit"
                         class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition"
                     >
                         Зарегистрироваться
                     </button>
-
                     <p class="text-center text-sm text-gray-600 mt-4">
                         Уже есть аккаунт?
                         <RouterLink
