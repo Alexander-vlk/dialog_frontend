@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { userAuthStore } from '@/stores/user.ts'
 import router from '@/router'
+import ProfileData from '@/components/profile/ProfileData.vue'
+import DashBoard from '@/components/profile/DashBoard.vue'
+import ModalForms from '@/components/profile/ModalForms.vue'
+import DailyLog from '@/components/profile/DailyLog.vue'
+import ReportLinks from '@/components/profile/ReportLinks.vue'
+import WeeklyLog from '@/components/profile/WeeklyLog.vue'
+import AnotherAppsLinks from '@/components/profile/AnotherAppsLinks.vue'
+import HeroActionBlock from '@/components/profile/HeroActionBlock.vue'
 
 const authStore = userAuthStore()
 
@@ -18,42 +26,42 @@ document.title = "Личный кабиет";
         <div
             class="col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
         >
-            <h2>Данные профиля</h2>
+            <ProfileData />
         </div>
         <div
             class="md:col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
         >
-            <h2>Сводка</h2>
+            <DashBoard />
         </div>
         <div
             class="md:col-span-1 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
         >
-            <h2>Блок модальных окон</h2>
+            <ModalForms />
         </div>
         <div
             class="md:col-span-4 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[40lvh]"
         >
-            <h2>Дневной отчет</h2>
+            <DailyLog />
         </div>
         <div
             class="md:col-span-1 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[40lvh]"
         >
-            <h2>Ссылки</h2>
+            <ReportLinks />
         </div>
         <div
             class="md:col-span-5 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[40lvh]"
         >
-            <h2>Недельный отчет</h2>
+            <WeeklyLog />
         </div>
         <div
             class="md:col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[10lvh]"
         >
-            <h2>Еще ссыылки куда-нибудь там</h2>
+            <AnotherAppsLinks />
         </div>
         <div
             class="md:col-span-3 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[10lvh]"
         >
-            <h2>Блок призыва к действию или чето такое</h2>
+            <HeroActionBlock />
         </div>
     </div>
 </template>
