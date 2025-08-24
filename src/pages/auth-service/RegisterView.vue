@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import FloatingError from '@/components/ui/FloatingError.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { NewUser } from '@/types/authTypes.ts'
 import { registerUser } from '@/services/auth-service/registerUser.ts'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/user.ts'
 import fetchUserData from '@/utils/common/fetchUserData.ts'
 import router from '@/router'
+import api from '@/services/axios.ts'
+import type { TreatmentType } from '@/types/cabinetTypes.ts'
 
 document.title = 'Регистрация'
 
@@ -28,12 +30,17 @@ const newUser = ref<NewUser>({
     remember: false,
     agreedWithPolicy: false,
 })
-
+const treatmentTypes = ref<Array<TreatmentType>>([])
 const errorMessage = ref('')
 
 function setImage(event: Event) {
     const target = event.target as HTMLInputElement;
     newUser.value.imageFile = target.files?.[0] ?? null;
+}
+
+async function getTreatmentTypes() {
+    const response = await api.get('cabinet/public/treatment-types/')
+    treatmentTypes.value = response.data
 }
 
 const sendNewUserData = async () => {
@@ -67,6 +74,11 @@ const sendNewUserData = async () => {
 
     await router.push({name: 'profile'})
 }
+
+onMounted(async () => {
+    const response = await api.get('cabinet/public/treatment-types/')
+    treatmentTypes.value = response.data
+})
 </script>
 
 <template>
@@ -211,10 +223,13 @@ const sendNewUserData = async () => {
                             required
                             class="w-full h-12 px-4 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         >
-                            <option value="">Выберите</option>
-                            <option value="1">Тип 1</option>
-                            <option value="2">Тип 2</option>
-                            <option value="gestational">Гестационный</option>
+                            <option
+                                v-for="(treatmentType, index) in treatmentTypes"
+                                :key="index"
+                                :value="treatmentType.slug"
+                            >
+                                {{ treatmentType.name }}
+                            </option>
                         </select>
                     </div>
 
