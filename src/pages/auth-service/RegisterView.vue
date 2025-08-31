@@ -2,13 +2,13 @@
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 
+import api from '@/services/axios.ts'
+import fetchUserData from '@/utils/common/fetchUserData.ts'
 import FloatingError from '@/components/ui/FloatingError.vue'
 import type { NewUser } from '@/types/authTypes.ts'
+import router from '@/router'
 import { registerUser } from '@/services/auth-service/registerUser.ts'
 import { userAuthStore } from '@/stores/user.ts'
-import fetchUserData from '@/utils/common/fetchUserData.ts'
-import router from '@/router'
-import api from '@/services/axios.ts'
 
 import type { DiabetesType, TreatmentType } from '@/types/cabinetTypes.ts'
 
@@ -38,6 +38,7 @@ const diabetesTypes = ref<Array<DiabetesType>>([])
 const errorMessage = ref<string>('')
 
 function setImage(event: Event) {
+    // Установить изображение
     const target = event.target as HTMLInputElement;
     newUser.value.imageFile = target.files?.[0] ?? null;
 }
@@ -71,7 +72,7 @@ async function getDiabetesTypes() {
     diabetesTypes.value = response.data
 }
 
-const sendNewUserData = async () => {
+async function sendNewUserData() {
     // Отправить данные нового пользователя
     let accessToken = undefined
     try {
@@ -104,6 +105,7 @@ const sendNewUserData = async () => {
 }
 
 onMounted(async () => {
+    // Выполнение после монтирования
     await getDiabetesTypes()
     await getTreatmentTypes()
 })
@@ -114,8 +116,8 @@ onMounted(async () => {
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-5xl">
             <h2 class="text-2xl font-bold text-primary mb-6">Регистрация</h2>
             <form
-                class="space-y-4 md:grid grid-cols-2 md:gap-5"
                 @submit.prevent="sendNewUserData"
+                class="space-y-4 md:grid grid-cols-2 md:gap-5"
                 type="multipart/form-data"
             >
                 <div>
