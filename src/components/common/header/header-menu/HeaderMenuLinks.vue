@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import api from '@/services/axios.ts'
 import { userAuthStore } from '@/stores/user.ts'
 import FloatingError from '@/components/ui/FloatingError.vue'
+import router from "@/router";
 
 
 const userStore = userAuthStore()
@@ -16,22 +17,18 @@ function logoutUser() {
         return
     }
 
-    try {
-        api.post(
-            'auth_service/logout/',
-            {},
-            {
-                headers: {
-                    'Authorization': `Bearer ${userStore.accessToken}`
-                }
+    api.post(
+        'auth_service/logout/',
+        {},
+        {
+            headers: {
+                'Authorization': `Bearer ${userStore.accessToken}`
             }
-        )
-    }
-    catch (error: unknown) {
-        errorMessage.value = 'Ошибка!'
-        throw error
-    }
+        }
+    )
+
     userStore.logout()
+    router.push({ name: 'main'})
 }
 </script>
 
