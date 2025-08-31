@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import FloatingError from '@/components/ui/FloatingError.vue'
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
+
+import FloatingError from '@/components/ui/FloatingError.vue'
 import type { NewUser } from '@/types/authTypes.ts'
 import { registerUser } from '@/services/auth-service/registerUser.ts'
-import axios from 'axios'
 import { userAuthStore } from '@/stores/user.ts'
 import fetchUserData from '@/utils/common/fetchUserData.ts'
 import router from '@/router'
 import api from '@/services/axios.ts'
+
 import type { DiabetesType, TreatmentType } from '@/types/cabinetTypes.ts'
+
 
 document.title = 'Регистрация'
 
@@ -32,11 +35,28 @@ const newUser = ref<NewUser>({
 })
 const treatmentTypes = ref<Array<TreatmentType>>([])
 const diabetesTypes = ref<Array<DiabetesType>>([])
-const errorMessage = ref('')
+const errorMessage = ref<string>('')
 
 function setImage(event: Event) {
     const target = event.target as HTMLInputElement;
     newUser.value.imageFile = target.files?.[0] ?? null;
+}
+
+function formatPhone(e: Event) {
+    // Форматировать телефон
+    let x = e?.target.value.replace(/\D/g, '')
+
+    if (x.startsWith('8')) {
+        x = '7' + x.slice(1)
+    }
+
+    let formatted = '+7';
+    if (x.length > 1) formatted += ' (' + x.substring(1, 4)
+    if (x.length >= 4) formatted += ') ' + x.substring(4, 7)
+    if (x.length >= 7) formatted += '-' + x.substring(7, 9)
+    if (x.length >= 9) formatted += '-' + x.substring(9, 11)
+
+    newUser.value.phoneNumber = formatted;
 }
 
 async function getTreatmentTypes() {
@@ -146,7 +166,10 @@ onMounted(async () => {
                         <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Телефон <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.phoneNumber"
-                            placeholder="70000000000"
+                            @input="formatPhone"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="+7 (___) ___-__-__"
                             type="tel"
                             id="phoneNumber"
                             required
