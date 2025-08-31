@@ -5,6 +5,8 @@ import api from '@/services/axios.ts'
 const isLoading = ref(true)
 const isErrorOccurred = ref(false)
 
+const showPageLoader = Number.parseInt(import.meta.env.VITE_SHOW_ERROR_PAGE)
+
 let activeRequests = 0
 api.interceptors.request.use((config) => {
     activeRequests++;
@@ -36,18 +38,22 @@ if (!activeRequests) {
 
 <template>
     <div
-        v-if="isLoading"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-100"
+        v-if="showPageLoader"
     >
-        <div class="w-16 h-16 border-4 border-blue-700 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-    <div
-        v-if="isErrorOccurred"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-100"
-    >
-        <p class="text-3xl">
-            Что-то пошло не так...
-        </p>
+        <div
+            v-if="isLoading"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-100"
+        >
+            <div class="w-16 h-16 border-4 border-blue-700 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <div
+            v-if="isErrorOccurred"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-100"
+        >
+            <p class="text-3xl">
+                Что-то пошло не так...
+            </p>
+        </div>
     </div>
 </template>
 
