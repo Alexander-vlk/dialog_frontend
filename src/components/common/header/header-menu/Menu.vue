@@ -14,17 +14,22 @@ defineProps<{
     <transition name="slide">
         <div
         v-if="isOpen"
-        class="fixed top-0 right-0 h-full z-50 bg-white shadow-lg transition-all duration-300 ease-in-out
-        w-full md:w-1/2 lg:w-1/6"
+        class="
+            fixed top-0 right-0 h-full z-50 bg-white shadow-lg transition-all
+            duration-300 ease-in-out w-full md:w-1/2 lg:w-1/3 xl:w-1/4
+        "
         >
             <div class="flex justify-between items-center p-4">
                 <p class="font-bold text-2xl">Меню</p>
-                <button @click="$emit('close')" class="hover:border hover:border-gray-200 hover:cursor-pointer rounded-xl">
+                <button
+                    @click="$emit('close')"
+                    class="hover:border hover:border-gray-200 hover:cursor-pointer rounded-xl p-2"
+                >
                     <XMarkIcon class="w-6 h-6" />
                 </button>
             </div>
 
-            <div class="p-4 grid grid-cols-4 gap-4 md:hidden">
+            <div class="p-4 grid grid-cols-4 gap-4 xl:hidden">
                 <div class="col-span-4">
                     <UserAuth :showUserMiniProfile="true" />
                 </div>
