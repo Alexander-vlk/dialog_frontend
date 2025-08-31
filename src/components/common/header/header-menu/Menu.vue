@@ -13,11 +13,11 @@ defineProps<{
 <template>
     <transition name="slide">
         <div
-        v-if="isOpen"
-        class="
-            fixed top-0 right-0 h-full z-50 bg-white shadow-lg transition-all
-            duration-300 ease-in-out w-full md:w-1/2 lg:w-1/3 xl:w-1/4
-        "
+            v-if="isOpen"
+            class="
+                fixed top-0 right-0 h-full z-50 bg-white shadow-lg transition-all
+                duration-300 ease-in-out w-full md:w-1/2 lg:w-1/3 xl:w-1/4
+            "
         >
             <div class="flex justify-between items-center p-4">
                 <p class="font-bold text-2xl">Меню</p>

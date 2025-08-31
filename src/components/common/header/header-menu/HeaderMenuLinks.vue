@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { ref } from 'vue'
 
 import api from '@/services/axios.ts'
@@ -29,11 +28,8 @@ function logoutUser() {
         )
     }
     catch (error: unknown) {
-        if (!axios.isAxiosError(error)) {
-            console.error(error)
-            return
-        }
         errorMessage.value = 'Ошибка!'
+        throw error
     }
     userStore.logout()
 }
@@ -45,8 +41,8 @@ function logoutUser() {
         <li>
             <RouterLink
                 :to="{ name: 'main' }"
-                class="text-xl hover:underline"
                 v-slot="{ isActive }"
+                class="text-xl hover:underline"
             >
                 <span :class="{ 'text-blue-500 hover:underline' : isActive }">
                     Главная
@@ -56,8 +52,8 @@ function logoutUser() {
         <li>
             <RouterLink
                 :to="{ name: 'profile' }"
-                class="text-xl hover:underline"
                 v-slot="{ isActive }"
+                class="text-xl hover:underline"
             >
                 <span :class="{ 'text-blue-500 hover:underline' : isActive }">
                     Личный кабинет
@@ -73,8 +69,8 @@ function logoutUser() {
         <li>
             <RouterLink
                 :to="{ name: 'about'}"
-                class="text-xl hover:underline"
                 v-slot="{ isActive }"
+                class="text-xl hover:underline"
             >
                 <span :class="{ 'text-blue-500 hover:underline' : isActive }">
                 О нас
@@ -90,8 +86,8 @@ function logoutUser() {
         <li>
             <RouterLink
                 :to="{ name: 'privacyPolicy'}"
-                class="text-xl hover:underline"
                 v-slot="{ isActive }"
+                class="text-xl hover:underline"
             >
                 <span :class="{ 'text-blue-500 hover:underline' : isActive }">
                     Политика конфиденциальности
