@@ -46,7 +46,9 @@ function logoutUser() {
                 </span>
             </RouterLink>
         </li>
-        <li>
+        <li
+            v-if="userStore.isAuthenticated"
+        >
             <RouterLink
                 :to="{ name: 'profile' }"
                 v-slot="{ isActive }"
