@@ -40,7 +40,7 @@ function setImage(event: Event) {
 }
 
 async function getTreatmentTypes() {
-    // Получчить типы лечения
+    // Получить типы лечения
     const response = await api.get('cabinet/public/treatment-types/')
     treatmentTypes.value = response.data
 }
@@ -52,7 +52,7 @@ async function getDiabetesTypes() {
 }
 
 const sendNewUserData = async () => {
-    // Отправить данные нового польозователя
+    // Отправить данные нового пользователя
     let accessToken = undefined
     try {
         const response = await registerUser(newUser.value)
@@ -103,6 +103,7 @@ onMounted(async () => {
                         <label for="username" class="block text-sm font-medium text-gray-700">Имя пользователя <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.username"
+                            placeholder="krutoy_bober"
                             type="text"
                             id="username"
                             required
@@ -134,6 +135,7 @@ onMounted(async () => {
                         <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.email"
+                            placeholder="star_butterfly@mail.ru"
                             type="email"
                             id="email"
                             required
@@ -144,6 +146,7 @@ onMounted(async () => {
                         <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Телефон <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.phoneNumber"
+                            placeholder="70000000000"
                             type="tel"
                             id="phoneNumber"
                             required
@@ -179,6 +182,7 @@ onMounted(async () => {
                         <label for="last_name" class="block text-sm font-medium text-gray-700">Фамилия <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.last_name"
+                            placeholder="Иванов"
                             type="text"
                             id="last_name"
                             required
@@ -189,6 +193,7 @@ onMounted(async () => {
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Имя <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.first_name"
+                            placeholder="Иван"
                             type="text"
                             id="first_name"
                             required
@@ -199,6 +204,7 @@ onMounted(async () => {
                         <label for="patronymicName" class="block text-sm font-medium text-gray-700">Отчество <span class="text-red-700">*</span></label>
                         <input
                             v-model="newUser.patronymicName"
+                            placeholder="Иваныч"
                             type="text"
                             id="patronymicName"
                             class="w-full h-12 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
