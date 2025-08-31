@@ -22,9 +22,9 @@ function logoutUser() {
         {},
         {
             headers: {
-                'Authorization': `Bearer ${userStore.accessToken}`
-            }
-        }
+                'Authorization': `Bearer ${userStore.accessToken}`,
+            },
+        },
     )
 
     userStore.logout()

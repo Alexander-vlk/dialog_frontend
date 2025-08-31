@@ -7,11 +7,13 @@ import Menu from "@/components/common/header/header-menu/Menu.vue";
 const isMenuOpen = ref(false)
 
 const toggleMenu = () => {
+    // Включить / выключить меню
     isMenuOpen.value = !isMenuOpen.value
 }
 
 const closeMenu = () => {
-  isMenuOpen.value = false
+    // Закрыть меню
+    isMenuOpen.value = false
 }
 </script>
 
@@ -22,7 +24,11 @@ const closeMenu = () => {
     >
         <Bars3Icon class="w-6 h-6" />
     </button>
-    <Menu :isOpen="isMenuOpen" @close="closeMenu" class="py-4 px-6" />
+    <Menu
+        :isOpen="isMenuOpen"
+        @close="closeMenu"
+        class="py-4 px-6"
+    />
 </template>
 
 <style scoped>
