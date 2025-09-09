@@ -1,39 +1,51 @@
-import {defineStore} from "pinia";
-import { ref, computed } from "vue";
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
 import type { User } from '@/types/userTypes.ts'
 
-export const userAuthStore  = defineStore('auth', () => {
-    const user = ref<User | null>(null)
-    const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
 
-    const isAuthenticated = computed(() => !!accessToken.value)
+export const userAuthStore = defineStore(
+    'user',
+    () => {
+        const storedUser = localStorage.getItem('user')
+        const user = ref<User | null>(storedUser ? JSON.parse(storedUser) : null)
 
-    function setAccessToken(token: string) {
-        accessToken.value = token
-        localStorage.setItem('accessToken', token)
-    }
+        const accessToken = ref<string | null>(localStorage.getItem('accessToken'))
 
-    function clearAccessToken() {
-        accessToken.value = null
-        localStorage.removeItem('accessToken')
-    }
+        const isAuthenticated = computed(() => !!accessToken.value)
 
-    function setUser(newUser: User) {
-        user.value = newUser
-    }
+        function setAccessToken(token: string) {
+            accessToken.value = token
+            localStorage.setItem('accessToken', token)
+        }
 
-    function logout() {
-        clearAccessToken()
-        user.value = null
-    }
+        function clearAccessToken() {
+            accessToken.value = null
+            localStorage.removeItem('accessToken')
+        }
 
-    return {
-        user,
-        accessToken,
-        isAuthenticated,
-        setAccessToken,
-        setUser,
-        logout,
-    }
-})
+        function setUser(newUser: User) {
+            user.value = newUser
+            localStorage.setItem('user', JSON.stringify(newUser))
+        }
+
+        function clearUser() {
+            user.value = null
+            localStorage.removeItem('user')
+        }
+
+        function logout() {
+            clearAccessToken()
+            clearUser()
+        }
+
+        return {
+            user,
+            accessToken,
+            isAuthenticated,
+            setAccessToken,
+            setUser,
+            logout,
+        }
+    },
+)
