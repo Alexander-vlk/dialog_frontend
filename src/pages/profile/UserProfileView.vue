@@ -24,12 +24,12 @@ document.title = "Личный кабиет";
         class="md:grid grid-cols-5 md:gap-3 m-5"
     >
         <div
-            class="col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
+            class="col-span-1 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
         >
             <ProfileData />
         </div>
         <div
-            class="md:col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
+            class="md:col-span-3 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
         >
             <DashBoard />
         </div>
