@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import ToDo from '@/components/dev/ToDo.vue'
+import HeroActionBlock from '@/components/profile/HeroActionBlock.vue'
 </script>
 
 <template>
@@ -55,6 +55,7 @@ import ToDo from '@/components/dev/ToDo.vue'
         </button>
     </div>
     <p>Вносить показатели можно не чаще одного раза в 15 минут</p>
+    <HeroActionBlock />
 </template>
 
 <style scoped>
