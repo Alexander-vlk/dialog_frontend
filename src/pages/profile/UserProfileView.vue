@@ -9,6 +9,7 @@ import ReportLinks from '@/components/profile/ReportLinks.vue'
 import WeeklyLog from '@/components/profile/WeeklyLog.vue'
 import AnotherAppsLinks from '@/components/profile/AnotherAppsLinks.vue'
 import HeroActionBlock from '@/components/profile/HeroActionBlock.vue'
+import BigReportsLinks from '@/components/profile/BigReportsLinks.vue'
 
 const authStore = userAuthStore()
 
@@ -54,14 +55,14 @@ document.title = "Личный кабиет";
             <WeeklyLog />
         </div>
         <div
-            class="md:col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[10lvh]"
+            class="md:col-span-2 bg-white rounded-xl shadow p-4 my-2 md:my-0"
         >
             <AnotherAppsLinks />
         </div>
         <div
-            class="md:col-span-3 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[10lvh]"
+            class="md:col-span-3 bg-white rounded-xl shadow p-4 my-2 md:my-0"
         >
-            <HeroActionBlock />
+            <BigReportsLinks />
         </div>
     </div>
 </template>
