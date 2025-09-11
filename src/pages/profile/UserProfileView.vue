@@ -21,7 +21,7 @@ document.title = "Личный кабиет";
 
 <template>
     <div
-        class="md:grid grid-cols-5 md:gap-3 m-5"
+        class="md:grid grid-cols-5 md:gap-3 m-5 max-w-[2000px] mx-auto px-2"
     >
         <div
             class="col-span-1 bg-white rounded-xl shadow p-4 my-2 md:my-0 min-h-[30lvh]"
