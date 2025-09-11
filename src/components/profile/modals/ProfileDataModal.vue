@@ -4,6 +4,7 @@ import RouterButton from '@/components/ui/RouterButton.vue'
 import { storeToRefs } from 'pinia'
 import { userAuthStore } from '@/stores/user.ts'
 import { ref } from 'vue'
+import ToDo from '@/components/dev/ToDo.vue'
 
 
 const { user } = storeToRefs(userAuthStore())
@@ -28,6 +29,7 @@ defineProps<{
             class="flex items-center justify-between mb-2"
         >
             <h2 class="text-xl font-bold">Профиль</h2>
+            <ToDo todoText="Доделать эту всплывашку" />
             <button
                 @click="$emit('close')"
                 class="hover:border hover:border-gray-200 hover:cursor-pointer rounded-xl p-2"
