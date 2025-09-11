@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import ToDo from '@/components/dev/ToDo.vue'
 </script>
 
 <template>
@@ -45,6 +46,7 @@
         </button>
     </div>
     <p>Вносить показатели можно не чаще одного раза в 15 минут</p>
+    <ToDo todoText="Привязать кнопки к модалкам и добавить таблицу, сколько записей было внесено по конкретному показателю" />
 </template>
 
 <style scoped>
