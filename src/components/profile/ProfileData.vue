@@ -71,7 +71,7 @@ function closeModal(): void {
         </button>
     </div>
     <div
-        class="mt-4 flex gap-2 flex-wrap items-center justify-center"
+        class="mt-4 flex gap-2 flex-wrap items-center"
     >
         <RouterButton buttonText="Сменить пароль" routeName="main" />
     </div>
