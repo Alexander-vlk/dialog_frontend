@@ -8,7 +8,6 @@ import DailyLog from '@/components/profile/DailyLog.vue'
 import ReportLinks from '@/components/profile/ReportLinks.vue'
 import WeeklyLog from '@/components/profile/WeeklyLog.vue'
 import AnotherAppsLinks from '@/components/profile/AnotherAppsLinks.vue'
-import HeroActionBlock from '@/components/profile/HeroActionBlock.vue'
 import BigReportsLinks from '@/components/profile/BigReportsLinks.vue'
 
 const authStore = userAuthStore()

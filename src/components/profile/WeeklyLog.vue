@@ -3,7 +3,11 @@
 </script>
 
 <template>
-    <h2>Недельный отчет</h2>
+    <h2
+        class="text-xl font-bold"
+    >
+        Отчет за неделю
+    </h2>
 </template>
 
 <style scoped>
