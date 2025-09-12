@@ -13,7 +13,7 @@ const averageBJU = ref<AverageBJU>({
 })
 
 async function getBJUData(): Promise<AverageBJU> {
-    const response = await api.get('data-tracking/bju/average/')
+    const response = await api.get<AverageBJU>('/data-tracking/bju/average/')
     return response.data
 }
 
