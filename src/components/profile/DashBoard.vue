@@ -1,6 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 
 import ToDo from '@/components/dev/ToDo.vue'
+import type { AverageBJU } from '@/types/DataTrackingTypes.ts'
+import api from '@/services/axios.ts'
+
+
+const averageBJU = ref<AverageBJU>({
+    proteins: 0,
+    fats: 0,
+    carbs: 0,
+})
+
+async function getBJUData(): AverageBJU {
+    const response = api.get('data-tracking/bju/average/')
+    averageBJU.value = response.data
+}
 </script>
 
 <template>
