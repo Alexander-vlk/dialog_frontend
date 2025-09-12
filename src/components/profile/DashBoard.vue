@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 import ToDo from '@/components/dev/ToDo.vue'
 import type { AverageBJU } from '@/types/DataTrackingTypes.ts'
@@ -12,10 +12,14 @@ const averageBJU = ref<AverageBJU>({
     carbs: 0,
 })
 
-async function getBJUData(): AverageBJU {
-    const response = api.get('data-tracking/bju/average/')
-    averageBJU.value = response.data
+async function getBJUData(): Promise<AverageBJU> {
+    const response = await api.get('data-tracking/bju/average/')
+    return response.data
 }
+
+onBeforeMount(async () => {
+    averageBJU.value = await getBJUData()
+})
 </script>
 
 <template>
