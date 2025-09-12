@@ -9,12 +9,17 @@ import ToDo from '@/components/dev/ToDo.vue'
     >
         Сводка <ToDo todoText="Доделать" />
     </h2>
-    <div>
+    <div
+        class="sm:flex flex-wrap items-center justify-between gap-2"
+    >
         <div>
-
+            БЖУ
         </div>
         <div>
-
+            Общие данные
+        </div>
+        <div>
+            Ударный режим
         </div>
     </div>
 </template>
