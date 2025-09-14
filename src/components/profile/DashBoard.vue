@@ -11,6 +11,7 @@ const averageBJU = ref<AverageBJU>({
     fats: 0,
     carbs: 0,
 })
+const streakDays = ref<number>(1)
 
 async function getBJUData(): Promise<AverageBJU> {
     const response = await api.get<AverageBJU>('/data-tracking/bju/average/')
@@ -37,8 +38,14 @@ onBeforeMount(async () => {
         <div>
             Общие данные
         </div>
-        <div>
-            Ударный режим
+        <div
+
+        >
+            <div
+                class="h-32 w-32 bg-orange-400 rounded-xl shadow flex items-center justify-center text-white text-3xl"
+            >
+            1
+            </div>
         </div>
     </div>
 </template>
