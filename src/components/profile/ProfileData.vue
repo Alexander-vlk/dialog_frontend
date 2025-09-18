@@ -26,59 +26,116 @@ function closeModal(): void {
 
 <template>
     <UserMiniProfile />
-    <table class="table-auto border-collapse border border-gray-300 w-full text-left mt-4">
-        <tbody>
-        <tr>
-            <td class="border border-gray-300 bg-gray-100 px-2 py-2 font-medium">Пол</td>
-            <td class="border border-gray-300 px-2 py-2">{{ userGender[user?.gender] }}</td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 bg-gray-100 px-2 py-2 font-medium">Дата рождения</td>
-            <td class="border border-gray-300 px-2 py-2">
+    <div
+        class="bg-blue-700 rounded-xl shadow px-4 py-2 my-3"
+    >
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Пол
+            </p>
+            <p
+                class="text-right"
+            >
+                {{ userGender[user?.gender] }}
+            </p>
+        </div>
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Дата рождения
+            </p>
+            <p
+                class="text-right"
+            >
                 {{ formatDate(user?.birth_date) }}
                 ({{ getUserAge(user.birth_date) }} лет)
-            </td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 bg-gray-100 px-2 py-2 font-medium">Вес</td>
-            <td class="border border-gray-300 px-2 py-2">
-                75 кг
-                <ToDo todo-text="Вычислять поле из последнего недельного отчета, где заполнен вес, и отправлять через апи" />
-            </td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 bg-gray-100 px-2 py-2 font-medium">Рост</td>
-            <td class="border border-gray-300 px-2 py-2">
+            </p>
+        </div>
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Тип диабета
+            </p>
+            <p
+                class="text-right"
+            >
+                {{ user?.diabetesType }}
+                <ToDo todo-text="Передавать тип диабета с бекенда" />
+            </p>
+        </div>
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Дата диагноза
+            </p>
+            <p
+                class="text-right"
+            >
+                {{ formatDate(user?.diagnosis_date) }}
+            </p>
+        </div>
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Тип лечения
+            </p>
+            <p
+                class="text-right"
+            >
+                {{ userGender[user?.gender] }}
+            </p>
+        </div>
+        <div
+            class="flex items-center justify-between text-white"
+        >
+            <p>
+                Рост
+            </p>
+            <p
+                class="text-right"
+            >
                 182 см
                 <ToDo todo-text="Добавить на беке поле в модель и в сериализаторы и в апи и отображать тут" />
-            </td>
-        </tr>
-        <tr>
-            <td class="border border-gray-300 bg-gray-100 px-2 py-2 font-medium">Тип диабета</td>
-            <td class="border border-gray-300 px-2 py-2">
-                1 типа {{ user?.diabetesType }}
-                <ToDo todo-text="Передавать тип диабета с бекенда" />
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div>
-        <button
-            @click="() => showModal = true"
-            class="w-full mt-2 text-white bg-blue-500 py-1 rounded-xl shadow cursor-pointer hover:bg-blue-700 transition"
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="flex text-center mt-4"
+    >
+        <RouterLink
+            :to="{ name: 'profile' }"
+            class="w-full bg-orange-500 text-white rounded-xl py-2 shadow hover:bg-orange-700 transition"
         >
-            Показать все
-        </button>
+            Редактировать профиль
+        </RouterLink>
     </div>
     <div
-        class="mt-4 flex gap-2 flex-wrap items-center"
+        class="flex text-center mt-2"
     >
-        <RouterButton buttonText="Сменить пароль" routeName="main" />
+        <RouterLink
+            :to="{ name: 'profile' }"
+            class="w-full bg-orange-500 text-white rounded-xl py-2 shadow hover:bg-orange-700 transition"
+        >
+            Сменить пароль
+        </RouterLink>
     </div>
-    <ProfileDataModal
-        :isOpenModal="showModal"
-        @close="closeModal"
-    />
+    <div
+        class="flex text-center mt-2"
+    >
+        <RouterLink
+            :to="{ name: 'profile' }"
+            class="w-full bg-orange-500 text-white rounded-xl py-2 shadow hover:bg-orange-700 transition"
+        >
+            Усилить защиту профиля
+        </RouterLink>
+    </div>
 </template>
 
 <style scoped>

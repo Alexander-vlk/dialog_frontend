@@ -3,7 +3,7 @@ export default function(dateString: string): string {
     const date = new Date(dateString)
     return new Intl.DateTimeFormat('ru-RU', {
         day: 'numeric',
-        month: 'long',
+        month: 'short',
         year: 'numeric',
     }).format(date)
 }
