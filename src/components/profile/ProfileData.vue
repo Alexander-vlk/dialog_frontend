@@ -5,8 +5,6 @@ import { ref } from 'vue'
 import getUserAge from '@/utils/common/getUserAge.ts'
 import formatDate from '@/utils/common/formatDate.ts'
 import ToDo from '@/components/dev/ToDo.vue'
-import RouterButton from '@/components/ui/RouterButton.vue'
-import ProfileDataModal from '@/components/profile/modals/ProfileDataModal.vue'
 import UserMiniProfile from '@/components/common/user-mini-profile/UserMiniProfile.vue'
 
 const { user } = storeToRefs(userAuthStore())
