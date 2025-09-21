@@ -1,26 +1,13 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
+import { ref } from 'vue'
 
 import ToDo from '@/components/dev/ToDo.vue'
-import type { AverageBJU } from '@/types/DataTrackingTypes.ts'
-import api from '@/services/axios.ts'
+import FirstColumn from '@/components/profile/dashboard/FirstColumn.vue'
+import SecondColumn from '@/components/profile/dashboard/SecondColumn.vue'
+import ThirdColumn from '@/components/profile/dashboard/ThirdColumn.vue'
 
 
-const averageBJU = ref<AverageBJU>({
-    proteins: 0,
-    fats: 0,
-    carbs: 0,
-})
 const streakDays = ref<number>(1)
-
-async function getBJUData(): Promise<AverageBJU> {
-    const response = await api.get<AverageBJU>('/data-tracking/bju/average/')
-    return response.data
-}
-
-onBeforeMount(async () => {
-    averageBJU.value = await getBJUData()
-})
 </script>
 
 <template>
@@ -33,19 +20,13 @@ onBeforeMount(async () => {
         class="sm:flex flex-wrap items-center justify-between gap-2"
     >
         <div>
-            БЖУ
+            <FirstColumn />
         </div>
         <div>
-            Общие данные
+            <SecondColumn />
         </div>
-        <div
-
-        >
-            <div
-                class="h-32 w-32 bg-orange-400 rounded-xl shadow flex items-center justify-center text-white text-3xl"
-            >
-            1
-            </div>
+        <div>
+            <ThirdColumn />
         </div>
     </div>
 </template>
