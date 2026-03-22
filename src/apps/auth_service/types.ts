@@ -1,0 +1,16 @@
+export type AppUser = {
+    id: number,
+    username: string,
+    email: string | null,
+    last_name: string | null,
+    first_name: string | null,
+    patronymic_name: string | null,
+    imageUrl: string | null,
+    gender: string,
+    height: number | null,
+    birthDate: string | null,
+    diabetesType: number | null,
+    diagnosisDate: string | null,
+    treatmentType: number | null,
+    phoneNumber: string | null,
+}
