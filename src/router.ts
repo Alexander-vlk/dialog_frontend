@@ -1,24 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import HomeView from "@/pages/main-page/HomeView.vue";
-import authRoutes from '@/router/auth-service/authRoutes.ts'
-import cabinetRoutes from '@/router/cabinet/cabinetRoutes.ts'
+import Home from '@/common/pages/Home.vue'
+import { authServiceRoutes } from '@/apps/auth_service/route.ts'
 
 const routes = [
     {
         path: '/',
-        name: 'main',
-        component: HomeView,
+        name: 'home',
+        component: Home,
     },
     {
         path: '/not-found',
         name: 'notFound',
         component: () => import('@/common/pages/NotFound.vue'),
     },
-    ...authRoutes,
-    ...cabinetRoutes,
+    ...authServiceRoutes,
 ]
-
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: routes,

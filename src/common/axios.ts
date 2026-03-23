@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from '@/router'
+import router from '@/router.ts'
 
 import {API_URL} from '@/common/constants.ts'
 import {STATUS_CODES} from '@/common/constants.ts'
