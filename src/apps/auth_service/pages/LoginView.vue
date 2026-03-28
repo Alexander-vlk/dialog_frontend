@@ -1,6 +1,7 @@
 <script setup lang="ts">
-
 import Login from '@/apps/auth_service/components/Login.vue'
+
+document.title = 'Войти'
 </script>
 
 <template>

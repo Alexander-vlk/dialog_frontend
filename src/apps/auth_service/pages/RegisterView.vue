@@ -1,6 +1,9 @@
 <script setup lang="ts">
 
-import Register from '@/apps/auth_service/components/Register.vue'
+
+import Register from "@/apps/auth_service/components/Register.vue";
+
+document.title = 'Создать аккаунт'
 </script>
 
 <template>
