@@ -7,7 +7,7 @@ export const appUserMock: AppUser = {
     last_name: 'Админов',
     first_name: 'Админ',
     patronymic_name: 'Админович',
-    imageUrl: 'ttp://localhost:8300/src/assets/images/img.png',
+    imageUrl: 'http://localhost:8300/src/assets/images/stub.png',
     gender: 'male',
     height: 200,
     birthDate: '2000-04-15T13:45:30+02:00',
