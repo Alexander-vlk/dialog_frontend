@@ -6,6 +6,8 @@ import router from "@/router.ts";
 import {readableGenderByGenderSlug} from "@/apps/cabinet/constants.ts";
 import formatDate from "@/common/utils/formatDate.ts";
 import {USE_MOCKS} from "@/common/constants.ts";
+import ProfileDataModalComponent
+    from "@/apps/cabinet/components/cabinet_main_page/ProfileDataModalComponent.vue";
 
 const userStore = userAuthStore()
 if (!userStore.user) {
@@ -16,6 +18,7 @@ const user: Ref<AppUser> = ref(userStore.user)
 const userWeight: Ref<number> = ref(getUserWeight(user.value))
 const userDiabetesType: Ref<string> = ref(getUserDiabetesType(user.value))
 const userTreatmentType: Ref<string> = ref(getUserTreatmentType(user.value))
+const isProfileModalVisible: Ref<boolean> = ref(false)
 function getUserWeight(user: AppUser): number {
     if (USE_MOCKS) {
         return 70
@@ -23,6 +26,7 @@ function getUserWeight(user: AppUser): number {
     // TODO: делать запрос на бэк
     return 0
 }
+
 function getUserDiabetesType(user: AppUser): string {
     /*Получить тип диабета пользователя*/
     if (USE_MOCKS) {
@@ -31,6 +35,7 @@ function getUserDiabetesType(user: AppUser): string {
     // TODO: делать запрос на бек
     return ''
 }
+
 function getUserTreatmentType(user: AppUser): string {
     /*Получить тип лечения пользователя*/
     if (USE_MOCKS) {
@@ -40,9 +45,9 @@ function getUserTreatmentType(user: AppUser): string {
     return ''
 }
 
-function openProfile() {
-    // TODO: заменить на реальное открытие модалки
-    alert('Открываем профиль пользователя')
+function switchProfileModal() {
+    /* Показать модальное окно профиля */
+    isProfileModalVisible.value = !isProfileModalVisible.value
 }
 
 const formattedGender = computed(() => {
@@ -116,7 +121,7 @@ const formattedDiagnosisDate = computed(() => {
         </div>
         <div class="flex justify-center">
             <button
-                @click="openProfile"
+                @click="switchProfileModal"
                 class="w-full bg-orange-500 hover:bg-orange-400 text-white font-medium py-2 rounded-lg transition hover:cursor-pointer"
             >
                 Открыть профиль
@@ -124,6 +129,7 @@ const formattedDiagnosisDate = computed(() => {
         </div>
 
     </div>
+    <ProfileDataModalComponent :user="user" :visible="isProfileModalVisible" @close="switchProfileModal" />
 </template>
 
 <style scoped>
