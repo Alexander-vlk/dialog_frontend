@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue'
+import {USE_MOCKS} from "@/common/constants.ts";
+import {userAuthStore} from "@/common/stores/user.ts";
+import {accessTokenMock, appUserMock} from "@/apps/auth_service/mocks/user.ts";
+import router from "@/router.ts";
 
 const username = ref('')
 const remember = ref(false)
@@ -10,13 +14,19 @@ const canLogIn = computed(() => {
 })
 
 const handleLogin = () => {
+    /*Обработка авторизации пользователя*/
+    if (USE_MOCKS) {
+        const userStore = userAuthStore()
+        userStore.setUser(appUserMock)
+        userStore.setAccessToken(accessTokenMock)
+        router.push({name: 'cabinet'})
+    }
     console.log('Login:', {
         username: username.value,
         remember: remember.value,
         password: password.value,
     })
     // todo: запрос на бек
-
 }
 </script>
 
@@ -52,7 +62,6 @@ const handleLogin = () => {
                         id="policy"
                         v-model="remember"
                         type="checkbox"
-                        required
                         class="h-4 w-4 rounded border-gray-300 text-blue-700 focus:ring-blue-700"
                     />
                     <label for="policy" class="text-sm text-gray-700 cursor-pointer">
