@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps, defineEmits, computed} from 'vue'
+import {defineProps, defineEmits, computed, onMounted, onUnmounted, watch} from 'vue'
 import {ArrowLeftIcon, PencilIcon} from '@heroicons/vue/24/solid'
 import type {AppUser} from "@/apps/auth_service/types.ts";
 import formatRussianPhone from "@/common/utils/formatRussianPhone.ts";
@@ -8,8 +8,6 @@ const props = defineProps<{
     visible: boolean,
     user: AppUser,
 }>()
-
-const user = props.user
 
 const emit = defineEmits<{
     (e: 'close'): void
@@ -30,6 +28,32 @@ function onBackgroundClick(e: MouseEvent) {
 const formattedPhoneNumber = computed(() => {
     return formatRussianPhone(props.user.phoneNumber)
 })
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && props.visible) {
+    closeModal()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -38,8 +62,8 @@ const formattedPhoneNumber = computed(() => {
         class="fixed inset-0 z-50 flex items-center justify-center modal-overlay backdrop-blur-sm bg-white/30"
         @click="onBackgroundClick"
     >
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 flex flex-col gap-4 relative">
-            <div class="flex gap-3 items-end ">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 flex flex-col gap-4 relative">
+            <div class="flex gap-3 items-end justify-between">
                 <h2 class="text-xl font-bold">
                     Профиль
                 </h2>
@@ -81,13 +105,29 @@ const formattedPhoneNumber = computed(() => {
 
             </div>
 
-            <button
-                @click="closeModal"
-                class="mt-4 self-start flex items-center gap-2 text-blue-500 hover:text-blue-700 font-medium hover:cursor-pointer"
-            >
-                <ArrowLeftIcon class="w-5 h-5"/>
-                Назад
-            </button>
+            <div class="flex items-center justify-between mt-4">
+                <button
+                    @click="closeModal"
+                    class="flex items-center gap-2 text-blue-500 hover:text-blue-700 font-medium hover:cursor-pointer"
+                >
+                    <ArrowLeftIcon class="w-5 h-5"/>
+                    Назад
+                </button>
+                <div class="flex gap-2">
+                    <RouterLink
+                        :to="{ name: 'change_password' }"
+                        class="bg-blue-400 rounded-xl py-2 px-5 text-white shadow hover:bg-blue-700 transition cursor-pointer"
+                    >
+                        Сменить пароль
+                    </RouterLink>
+                    <RouterLink
+                        :to="{ name: 'change_password' }"
+                        class="bg-blue-400 rounded-xl py-2 px-5 text-white shadow hover:bg-blue-700 transition cursor-pointer"
+                    >
+                        Усилить защиту профиля
+                    </RouterLink>
+                </div>
+            </div>
         </div>
     </div>
 </template>
