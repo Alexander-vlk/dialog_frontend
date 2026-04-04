@@ -12,7 +12,7 @@ import ProfileDataModalComponent
 const userStore = userAuthStore()
 if (!userStore.user) {
     router.push({name: 'login'})
-    throw new Error('User not found')
+    throw new Error('User not authenticated')
 }
 const user: Ref<AppUser> = ref(userStore.user)
 const userWeight: Ref<number> = ref(getUserWeight(user.value))
@@ -129,7 +129,7 @@ const formattedDiagnosisDate = computed(() => {
         </div>
 
     </div>
-    <ProfileDataModalComponent :user="user" :visible="isProfileModalVisible" @close="switchProfileModal" />
+    <ProfileDataModalComponent :visible="isProfileModalVisible" @close="switchProfileModal" />
 </template>
 
 <style scoped>
