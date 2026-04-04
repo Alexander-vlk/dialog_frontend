@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Login from '@/apps/auth_service/components/Login.vue'
+import Login from '@/apps/auth_service/components/LoginComponent.vue'
 
 document.title = 'Войти'
 </script>

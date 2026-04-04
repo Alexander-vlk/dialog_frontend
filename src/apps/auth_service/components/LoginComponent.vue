@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 
 const username = ref('')
 const remember = ref(false)
 const password = ref('')
+
+const canLogIn = computed(() => {
+    return username.value && password.value
+})
 
 const handleLogin = () => {
     console.log('Login:', {
@@ -27,7 +31,8 @@ const handleLogin = () => {
                         v-model="username"
                         type="text"
                         required
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700"
+                        autofocus
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700"
                         placeholder="Имя пользователя"
                     />
                 </div>
@@ -37,7 +42,7 @@ const handleLogin = () => {
                         v-model="password"
                         type="password"
                         required
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700"
                         placeholder="Введите пароль"
                     />
                 </div>
@@ -57,7 +62,9 @@ const handleLogin = () => {
 
                 <button
                     type="submit"
-                    class="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition cursor-pointer"
+                    class="w-full bg-blue-700 text-white py-2 rounded-lg font-semibold transition"
+                    :disabled="!canLogIn"
+                    :class="!canLogIn ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800 cursor-pointer'"
                 >
                     Войти
                 </button>
