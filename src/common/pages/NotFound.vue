@@ -1,36 +1,24 @@
 <script setup lang="ts">
 import RouterButton from '@/common/components/ui/RouterButton.vue'
+
 document.title = 'Страница не найдена'
 </script>
 
 <template>
-    <div
-        class="bg-white shadow my-7 w-full min-h-[40lvh] flex flex-wrap flex-col items-center justify-center p-4"
-    >
-        <div
-            class="flex flex-wrap items-center justify-center w-full max-w-[50lvw] gap-8"
-        >
-            <h2 class="text-blue-500 font-bold text-[128px] sm:text-[256px] leading-none" id="not-found-error-code">
+    <div class="min-h-screen w-full flex items-center justify-center p-4">
+        <div class="flex flex-col items-center justify-center w-full max-w-md text-center gap-6">
+            <h2 class="text-blue-500 font-bold text-[96px] sm:text-[160px] leading-none">
                 404
             </h2>
-
-            <div class="bg-red-500 hidden xl:block rounded-xl shadow w-[0.75lvmin] h-[20lvh] flex-shrink-0"></div>
-
-            <div class="flex flex-col">
-                <p class="w-full text-5xl font-bold">
-                    <span class="text-blue-500 text-2xl sm:text-[3lvmin]">Страница</span>
-                    <span class="text-red-500 text-2xl sm:text-[3lvmin] block">не найдена</span>
-                </p>
-                <RouterButton
-                    routeName="main"
-                    buttonText="На главную"
-                    class="mt-4 self-start"
-                />
-            </div>
+            <p>
+                <span class="text-blue-500 text-xl sm:text-2xl">Страница </span>
+                <span class="text-red-500 text-xl sm:text-2xl">не найдена </span>
+            </p>
+            <RouterButton
+                routeName="cabinet"
+                buttonText="В личный кабинет"
+                class="mt-2"
+            />
         </div>
     </div>
 </template>
-
-<style scoped>
-
-</style>
