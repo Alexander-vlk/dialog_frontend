@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Login from '@/apps/auth_service/components/LoginComponent.vue'
+import LoginComponent from '@/apps/auth_service/components/LoginComponent.vue'
 
 document.title = 'Войти'
 </script>
@@ -8,7 +8,7 @@ document.title = 'Войти'
     <section
         class="w-full max-w-7xl mx-auto"
     >
-        <Login/>
+        <LoginComponent/>
     </section>
 </template>
 

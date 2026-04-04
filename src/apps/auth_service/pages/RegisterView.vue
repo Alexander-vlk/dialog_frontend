@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 
-import Register from "@/apps/auth_service/components/RegisterComponent.vue";
+    import RegisterComponent from "@/apps/auth_service/components/RegisterComponent.vue";
 
 document.title = 'Создать аккаунт'
 </script>
@@ -10,7 +10,7 @@ document.title = 'Создать аккаунт'
     <section
         class="w-full max-w-7xl mx-auto"
     >
-        <Register/>
+        <RegisterComponent/>
     </section>
 </template>
 

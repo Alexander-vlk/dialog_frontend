@@ -1,4 +1,5 @@
 export const API_URL = import.meta.env.VITE_BACKEND_API_URL
+export const USE_MOCKS = import.meta.env.VITE_USE_MOCKS
 export const STATUS_CODES = {
     OK: 200,
     CREATED: 201,
