@@ -41,7 +41,7 @@ const formattedPhoneNumber = computed(() => {
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 flex flex-col gap-4 relative">
             <div class="flex gap-3 items-end ">
                 <h2 class="text-xl font-bold">
-                    Данные профиля
+                    Профиль
                 </h2>
                 <RouterLink
                     :to="{name: 'edit_profile'}"
