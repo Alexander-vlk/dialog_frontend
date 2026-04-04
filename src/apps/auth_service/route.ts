@@ -9,4 +9,4 @@ export const authServiceRoutes = [
         name: 'register',
         component: () => import('@/apps/auth_service/pages/RegisterView.vue'),
     },
-]
+] as const
