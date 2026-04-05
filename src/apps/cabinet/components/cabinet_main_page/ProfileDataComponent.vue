@@ -73,7 +73,7 @@ const formattedDiagnosisDate = computed(() => {
 </script>
 
 <template>
-    <div class="w-full mx-auto p-4 flex flex-col gap-3">
+    <div class="w-full mx-auto p-4 grid grid-rows-[1fr_3fr_1fr] gap-3">
         <div class="flex items-center gap-2">
             <img
                 :src="user.imageUrl || ''"
@@ -123,7 +123,7 @@ const formattedDiagnosisDate = computed(() => {
         <div class="flex justify-center">
             <button
                 @click="switchProfileModal"
-                class="w-full bg-orange-500 hover:bg-orange-400 text-white font-medium py-2 rounded-lg transition hover:cursor-pointer"
+                class="w-full bg-orange-500 hover:bg-orange-400 text-white font-medium rounded-lg transition hover:cursor-pointer shadow-sm"
             >
                 Открыть профиль
             </button>

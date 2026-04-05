@@ -3,11 +3,13 @@ import ProfileDataComponent
     from "@/apps/cabinet/components/cabinet_main_page/ProfileDataComponent.vue";
 import SummaryBlockComponent
     from "@/apps/cabinet/components/cabinet_main_page/summary/SummaryBlockComponent.vue";
+import HeaderComponent from '@/common/components/ui/HeaderComponent.vue'
 
 document.title = 'Личный кабинет'
 </script>
 
 <template>
+    <HeaderComponent />
     <div class="min-h-screen p-4 flex flex-col gap-4">
         <div
             class="grid grid-cols-1 gap-4 md:grid-cols-[1fr_4fr] md:auto-rows-min md:grid-flow-row"

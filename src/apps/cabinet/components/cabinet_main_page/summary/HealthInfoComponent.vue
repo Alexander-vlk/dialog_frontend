@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {ClipboardIcon} from '@heroicons/vue/24/solid'
+import { ClipboardIcon } from '@heroicons/vue/24/solid'
 
 const stats = [
-    {label: 'Калории', avg: 2054, median: 2000},
-    {label: 'Белки', avg: 79, median: 75},
-    {label: 'Жиры', avg: 10, median: 12},
-    {label: 'Углеводы', avg: 110, median: 105}
+    { label: 'Калории', avg: 2054, median: 2000 },
+    { label: 'Белки', avg: 79, median: 75 },
+    { label: 'Жиры', avg: 10, median: 12 },
+    { label: 'Углеводы', avg: 110, median: 105 }
 ]
 
 function getTrend(avg: number, median: number) {
@@ -21,7 +21,7 @@ function copyData() {
 </script>
 
 <template>
-    <div class="bg-blue-500 h-full rounded-xl shadow-sm text-white flex flex-col gap-2 mx-2">
+    <div class="bg-blue-500 h-full rounded-xl shadow-sm text-white flex flex-col gap-2">
         <h2 class="py-2 mx-4 text-xl">Общая информация по здоровью</h2>
         <div class=" h-[2px] bg-white mx-4"></div>
 
@@ -38,7 +38,6 @@ function copyData() {
                 <tr
                     v-for="(item, index) in stats"
                     :key="index"
-                    class="hover:bg-white/10 transition"
                 >
                     <td class="py-1">{{ item.label }}</td>
                     <td class="text-right py-1">
@@ -66,12 +65,12 @@ function copyData() {
             </table>
         </div>
 
-        <div class="relative">
+        <div class="relative mt-10">
             <button
                 @click="copyData"
                 class="absolute bottom-2 right-2 p-1 rounded hover:bg-white/20 transition"
             >
-                <ClipboardIcon class="w-7 h-7 text-white hover:cursor-pointer"/>
+                <ClipboardIcon class="w-7 h-7 text-white hover:cursor-pointer" />
             </button>
         </div>
     </div>

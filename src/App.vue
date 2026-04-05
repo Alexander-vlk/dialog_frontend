@@ -4,7 +4,7 @@ import Cookie from '@/common/components/ui/Cookie.vue'
 
 <template>
     <section
-        class="min-h-[80lvh]"
+        class="min-h-[80lvh] max-w-[1600px] mx-auto"
     >
         <RouterView />
         <Cookie />
