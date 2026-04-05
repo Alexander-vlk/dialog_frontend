@@ -3,6 +3,8 @@ import ChartsContainerComponent
     from "@/apps/cabinet/components/cabinet_main_page/summary/ChartsContainerComponent.vue";
 import HealthInfoComponent
     from "@/apps/cabinet/components/cabinet_main_page/summary/HealthInfoComponent.vue";
+import SidebarComponent
+    from "@/apps/cabinet/components/cabinet_main_page/summary/SidebarComponent.vue";
 </script>
 
 <template>
@@ -13,8 +15,8 @@ import HealthInfoComponent
     <div>
         <HealthInfoComponent />
     </div>
-    <div class="bg-gray-100">
-        1
+    <div>
+        <SidebarComponent />
     </div>
 </div>
 </template>
