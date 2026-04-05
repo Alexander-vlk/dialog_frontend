@@ -56,6 +56,7 @@ const formattedGender = computed(() => {
 })
 const age = computed(() => {
     /*Форматированная дата рождения*/
+    // todo: переделать
     return {
         value: 1,
         postfix: 'год',
@@ -72,7 +73,7 @@ const formattedDiagnosisDate = computed(() => {
 </script>
 
 <template>
-    <div class="w-full mx-auto p-4 flex flex-col gap-3 shadow-md">
+    <div class="w-full mx-auto p-4 flex flex-col gap-3">
         <div class="flex items-center gap-2">
             <img
                 :src="user.imageUrl || ''"

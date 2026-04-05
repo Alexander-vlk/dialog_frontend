@@ -10,9 +10,9 @@ export const appUserMock: AppUser = {
     imageUrl: 'http://localhost:8300/src/assets/images/stub.png',
     gender: 'male',
     height: 200,
-    birthDate: '2000-04-15T13:45:30+02:00',
+    birthDate: '2000-04-15',
     diabetesType: 1,
-    diagnosisDate: '2026-04-15T13:45:30+02:00',
+    diagnosisDate: '2026-04-15',
     treatmentType: 2,
     phoneNumber: '88005553535',
 } as const
