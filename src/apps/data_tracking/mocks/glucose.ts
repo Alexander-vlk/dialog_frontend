@@ -23,7 +23,7 @@ export const glucoseRecordsMock: Array<GlucoseData> = [
     },
     {
         user: 1,
-        value: 4.9,
+        value: 11.9,
         measured_at: '2026-04-15T07:45:00+03:00',
     },
     {
@@ -118,7 +118,7 @@ export const glucoseRecordsMock: Array<GlucoseData> = [
     },
     {
         user: 1,
-        value: 7.3,
+        value: 1.3,
         measured_at: '2026-04-24T21:30:00+03:00',
     },
     {
