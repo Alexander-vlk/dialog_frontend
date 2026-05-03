@@ -31,9 +31,6 @@ const handleLogin = async () => {
         }
     )
     const userData: AppUser = response.data
-    if (!userData.access_token) {
-        throw new Error('В ответе нет access_token')
-    }
     const userStore = userAuthStore()
     userStore.setUser(userData)
     userStore.setAccessToken(userData.access_token)

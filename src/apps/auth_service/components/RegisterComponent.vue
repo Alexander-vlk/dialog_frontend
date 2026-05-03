@@ -1,6 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import {computed, ref} from 'vue'
 import {EyeIcon, EyeSlashIcon} from '@heroicons/vue/24/outline'
+import api from '@/common/axios.js'
+import type { AppUser } from '@/apps/auth_service/types.js'
+import { userAuthStore } from '@/common/stores/user.js'
+import router from '@/router.js'
 
 const username = ref('')
 const password = ref('')
@@ -12,11 +16,24 @@ const canCreateAccount = computed(() => {
     return username.value && password.value && passwordRepeat.value && accepted.value
 })
 
-const handleRegister = () => {
+const handleRegister = async () => {
+    /* Регистрация */
     if (password.value !== passwordRepeat.value) {
         return
     }
-    // todo: запрос на бек
+    const response = await api.post(
+        '/api/auth_service/users/register',
+        {
+            username: username.value,
+            password: password.value,
+            password_repeat: passwordRepeat.value,
+        }
+    )
+    const userData: AppUser = response.data
+    const userStore = userAuthStore()
+    userStore.setUser(userData)
+    userStore.setAccessToken(userData.access_token)
+    await router.push({ name: 'cabinet' })
 }
 </script>
 
