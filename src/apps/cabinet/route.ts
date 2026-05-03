@@ -5,7 +5,7 @@ export const cabinetRoutes = [
         component: () => import('@/apps/cabinet/pages/CabinetMainPageView.vue'),
     },
     {
-        path: '/profile/edit',
+        path: '/cabinet/edit',
         name: 'edit_profile',
         component: () => import('@/apps/cabinet/pages/EditProfileView.vue'),
     }

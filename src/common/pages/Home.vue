@@ -6,7 +6,7 @@ if (!userStore.isAuthenticated) {
     window.location.href = '/login'
 }
 else {
-    window.location.href = '/profile'
+    window.location.href = '/cabinet'
 }
 </script>
 

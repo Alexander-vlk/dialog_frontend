@@ -11,9 +11,7 @@ export const appUserMock: AppUser = {
     gender: 'male',
     height: 200,
     birthDate: '2000-04-15',
-    diabetesType: 1,
     diagnosisDate: '2026-04-15',
-    treatmentType: 2,
     phoneNumber: '88005553535',
 } as const
 export const accessTokenMock: string = 'test_access_token_mock'

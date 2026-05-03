@@ -9,8 +9,6 @@ export type AppUser = {
     gender: string,
     height: number | null,
     birthDate: string | null,
-    diabetesType: number | null,
     diagnosisDate: string | null,
-    treatmentType: number | null,
     phoneNumber: string,
 }

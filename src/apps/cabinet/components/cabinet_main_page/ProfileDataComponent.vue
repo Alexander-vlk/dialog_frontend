@@ -19,33 +19,18 @@ if (!userStore.user) {
 const user: Ref<AppUser> = ref(userStore.user)
 
 const userWeight = ref(getUserWeight())
-const userDiabetesType = ref(getUserDiabetesType())
-const userTreatmentType = ref(getUserTreatmentType())
 
 const isProfileModalVisible = ref(false)
 
-// ---- data getters ----
 function getUserWeight(): number {
     if (USE_MOCKS) return 70
     return 0
 }
 
-function getUserDiabetesType(): string {
-    if (USE_MOCKS) return '1 типа'
-    return ''
-}
-
-function getUserTreatmentType(): string {
-    if (USE_MOCKS) return 'Инсулинотерапия'
-    return ''
-}
-
-// ---- UI ----
 function switchProfileModal() {
     isProfileModalVisible.value = !isProfileModalVisible.value
 }
 
-// ---- computed ----
 const formattedGender = computed(() =>
     readableGenderByGenderSlug[user.value.gender]
 )
@@ -102,16 +87,6 @@ const formattedDiagnosisDate = computed(() => {
                 </div>
 
                 <div class="flex justify-between">
-                    <span>Тип диабета</span>
-                    <span>{{ userDiabetesType }}</span>
-                </div>
-
-                <div class="flex justify-between">
-                    <span>Тип лечения</span>
-                    <span>{{ userTreatmentType }}</span>
-                </div>
-
-                <div class="flex justify-between">
                     <span>Дата диагноза</span>
                     <span>{{ formattedDiagnosisDate }}</span>
                 </div>
@@ -124,6 +99,12 @@ const formattedDiagnosisDate = computed(() => {
                 class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
             >
                 Внести показатели
+            </button>
+
+            <button
+                class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
+            >
+                Принять лекарство
             </button>
 
             <button
