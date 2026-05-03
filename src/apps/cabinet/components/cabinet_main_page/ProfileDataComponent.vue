@@ -17,9 +17,7 @@ if (!userStore.user) {
 }
 
 const user: Ref<AppUser> = ref(userStore.user)
-
 const userWeight = ref(getUserWeight())
-
 const isProfileModalVisible = ref(false)
 
 function getUserWeight(): number {
@@ -41,8 +39,8 @@ const age = computed(() => ({
 }))
 
 const formattedDiagnosisDate = computed(() => {
-    if (!user.value.diagnosisDate) return 'Не указан'
-    return formatDate(user.value.diagnosisDate)
+    if (!user.value.diagnosis_date) return 'Не указан'
+    return formatDate(user.value.diagnosis_date)
 })
 </script>
 
@@ -51,7 +49,7 @@ const formattedDiagnosisDate = computed(() => {
 
         <div class="flex items-center gap-3">
             <img
-                :src="user.imageUrl || ''"
+                :src="user.image || ''"
                 alt="Аватар"
                 class="w-20 h-20 rounded-full object-cover"
             />

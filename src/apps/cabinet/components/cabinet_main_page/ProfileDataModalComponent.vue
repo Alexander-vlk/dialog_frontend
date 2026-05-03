@@ -5,6 +5,7 @@ import type {AppUser} from "@/apps/auth_service/types.ts";
 import formatRussianPhone from "@/common/utils/formatRussianPhone.ts";
 import router from "@/router.ts";
 import {userAuthStore} from "@/common/stores/user.ts";
+import api from '@/common/axios.ts'
 
 const props = defineProps<{
     visible: boolean,
@@ -43,14 +44,14 @@ function handleKeydown(e: KeyboardEvent) {
     }
 }
 
-function handleLogOut(event: Event) {
+async function handleLogOut(event: Event) {
     event.preventDefault()
     if (!confirm('Действительно выйти?')) {
         return
     }
-    // todo: отправлять запрос на бек
+    await api.post('/api/auth_service/logout/')
     userStore.logout()
-    router.push({name: 'login'})
+    await router.push({name: 'login'})
 }
 
 onMounted(() => {
