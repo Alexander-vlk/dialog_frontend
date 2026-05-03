@@ -4,6 +4,8 @@ import {USE_MOCKS} from "@/common/constants.ts";
 import {userAuthStore} from "@/common/stores/user.ts";
 import {accessTokenMock, appUserMock} from "@/apps/auth_service/mocks/user.ts";
 import router from "@/router.ts";
+import api from '@/common/axios.ts'
+import type { AppUser } from '@/apps/auth_service/types.ts'
 
 const username = ref('')
 const remember = ref(false)
@@ -13,20 +15,29 @@ const canLogIn = computed(() => {
     return username.value && password.value
 })
 
-const handleLogin = () => {
-    /*Обработка авторизации пользователя*/
+const handleLogin = async () => {
+    /* Авторизовать пользователя */
     if (USE_MOCKS) {
         const userStore = userAuthStore()
         userStore.setUser(appUserMock)
         userStore.setAccessToken(accessTokenMock)
-        router.push({name: 'cabinet'})
+        return router.push({ name: 'cabinet' })
     }
-    console.log('Login:', {
-        username: username.value,
-        remember: remember.value,
-        password: password.value,
-    })
-    // todo: запрос на бек
+    const response = await api.post(
+        '/api/auth_service/token/obtain/',
+        {
+            username: username.value,
+            password: password.value,
+        }
+    )
+    const userData: AppUser = response.data
+    if (!userData.access_token) {
+        throw new Error('В ответе нет access_token')
+    }
+    const userStore = userAuthStore()
+    userStore.setUser(userData)
+    userStore.setAccessToken(userData.access_token)
+    await router.push({ name: 'cabinet' })
 }
 </script>
 
