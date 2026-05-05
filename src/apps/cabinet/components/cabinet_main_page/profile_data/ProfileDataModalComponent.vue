@@ -95,7 +95,6 @@ watch(
                     Редактировать
                 </RouterLink>
             </div>
-
             <div class="flex items-center gap-4">
                 <img
                     :src="user.imageUrl || ''"
@@ -119,15 +118,11 @@ watch(
                     </div>
                 </div>
             </div>
-
             <div class="bg-blue-500 text-white rounded-lg p-4 flex flex-col gap-2">
                 <p>Здесь будет информация о пользователе...</p>
-
             </div>
-
             <div
                 class="mt-4 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3">
-
                 <button
                     @click="closeModal"
                     class="flex items-center justify-center gap-2 text-blue-500 hover:text-blue-700 font-medium hover:cursor-pointer w-full md:w-auto"
@@ -135,7 +130,6 @@ watch(
                     <ArrowLeftIcon class="w-5 h-5"/>
                     Назад
                 </button>
-
                 <div class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
                     <RouterLink
                         :to="{ name: 'change_password' }"
@@ -156,7 +150,6 @@ watch(
                         Выйти
                     </button>
                 </div>
-
             </div>
         </div>
     </div>

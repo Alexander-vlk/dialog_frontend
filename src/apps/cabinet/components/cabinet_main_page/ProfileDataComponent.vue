@@ -7,7 +7,26 @@ import {readableGenderByGenderSlug} from "@/apps/cabinet/constants.ts"
 import formatDate from "@/common/utils/formatDate.ts"
 import {USE_MOCKS} from "@/common/constants.ts"
 import ProfileDataModalComponent
-    from "@/apps/cabinet/components/cabinet_main_page/ProfileDataModalComponent.vue"
+    from "@/apps/cabinet/components/cabinet_main_page/profile_data/ProfileDataModalComponent.vue"
+import MedicationTakeModal
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/MedicationTakeModal.vue'
+import IndicatorsModalComponent
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorsModalComponent.vue'
+import IndicatorFormModalComponent
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorFormModalComponent.vue'
+import {CheckCircleIcon, ExclamationCircleIcon} from '@heroicons/vue/24/outline'
+
+type Indicator = {
+    title: string,
+    endpoint: string,
+    colorClass: string,
+    icon: object,
+}
+
+type Notification = {
+    type: 'success' | 'error',
+    text: string,
+}
 
 const userStore = userAuthStore()
 
@@ -19,6 +38,11 @@ if (!userStore.user) {
 const user: Ref<AppUser> = ref(userStore.user)
 const userWeight = ref(getUserWeight())
 const isProfileModalVisible = ref(false)
+const isModalOpen = ref(false)
+const isIndicatorsModalVisible = ref(false)
+const selectedIndicator = ref<Indicator | null>(null)
+const notification = ref<Notification | null>(null)
+let notificationTimeout: ReturnType<typeof setTimeout> | null = null
 
 function getUserWeight(): number {
     if (USE_MOCKS) return 70
@@ -27,6 +51,47 @@ function getUserWeight(): number {
 
 function switchProfileModal() {
     isProfileModalVisible.value = !isProfileModalVisible.value
+}
+
+function switchIndicatorsModal() {
+    isIndicatorsModalVisible.value = !isIndicatorsModalVisible.value
+}
+
+function openIndicatorForm(indicator: Indicator) {
+    selectedIndicator.value = indicator
+    isIndicatorsModalVisible.value = false
+}
+
+function closeIndicatorForm() {
+    selectedIndicator.value = null
+}
+
+function showNotification(type: Notification['type'], text: string) {
+    notification.value = {type, text}
+
+    if (notificationTimeout) {
+        clearTimeout(notificationTimeout)
+    }
+
+    notificationTimeout = setTimeout(() => {
+        notification.value = null
+        notificationTimeout = null
+    }, 4000)
+}
+
+function handleIndicatorSaved() {
+    const indicatorTitle = selectedIndicator.value?.title || 'Показатель'
+    showNotification('success', `${indicatorTitle} успешно внесен`)
+    closeIndicatorForm()
+}
+
+function handleMedicationSaved() {
+    showNotification('success', 'Прием лекарства успешно внесен')
+    isModalOpen.value = false
+}
+
+function handleSaveError(message: string) {
+    showNotification('error', message)
 }
 
 const formattedGender = computed(() =>
@@ -45,6 +110,24 @@ const formattedDiagnosisDate = computed(() => {
 </script>
 
 <template>
+    <Transition name="notification">
+        <div
+            v-if="notification"
+            class="fixed top-4 right-4 z-[70] max-w-sm rounded-lg border bg-white px-4 py-3 shadow-lg flex items-start gap-3"
+            :class="notification.type === 'success' ? 'border-emerald-200 text-emerald-700' : 'border-red-200 text-red-700'"
+        >
+            <CheckCircleIcon
+                v-if="notification.type === 'success'"
+                class="w-5 h-5 shrink-0"
+            />
+            <ExclamationCircleIcon
+                v-else
+                class="w-5 h-5 shrink-0"
+            />
+            <span class="text-sm font-medium">{{ notification.text }}</span>
+        </div>
+    </Transition>
+
     <div class="w-full p-4 flex flex-col gap-4">
 
         <div class="flex items-center gap-3">
@@ -94,16 +177,25 @@ const formattedDiagnosisDate = computed(() => {
 
         <div class="flex flex-col gap-2 mt-auto">
             <button
+                @click="switchIndicatorsModal"
                 class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
             >
                 Внести показатели
             </button>
 
             <button
+                @click="isModalOpen = true"
                 class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
             >
                 Принять лекарство
             </button>
+
+            <MedicationTakeModal
+                :visible="isModalOpen"
+                @close="isModalOpen = false"
+                @saved="handleMedicationSaved"
+                @error="handleSaveError"
+            />
 
             <button
                 @click="switchProfileModal"
@@ -119,7 +211,31 @@ const formattedDiagnosisDate = computed(() => {
         :visible="isProfileModalVisible"
         @close="switchProfileModal"
     />
+
+    <IndicatorsModalComponent
+        :visible="isIndicatorsModalVisible"
+        @close="switchIndicatorsModal"
+        @select="openIndicatorForm"
+    />
+
+    <IndicatorFormModalComponent
+        :visible="Boolean(selectedIndicator)"
+        :indicator="selectedIndicator"
+        @close="closeIndicatorForm"
+        @saved="handleIndicatorSaved"
+        @error="handleSaveError"
+    />
 </template>
 
 <style scoped>
+.notification-enter-active,
+.notification-leave-active {
+    transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.notification-enter-from,
+.notification-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
 </style>

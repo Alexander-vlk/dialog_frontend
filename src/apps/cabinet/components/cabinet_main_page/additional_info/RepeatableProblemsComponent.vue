@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import {computed, ref, type Ref} from 'vue'
-import {glucoseRecordsMock} from '@/apps/data_tracking/mocks/glucose.ts'
-import {USE_MOCKS} from '@/common/constants.ts'
-import type {GlucoseData} from '@/apps/data_tracking/types.ts'
+import {computed} from 'vue'
+import {useGlucoseRecords} from '@/apps/data_tracking/composables/useGlucoseRecords.ts'
 
 // ---- data ----
-const glucoseData: Ref<GlucoseData[]> = ref(getData())
-
-function getData(): GlucoseData[] {
-    if (USE_MOCKS) return glucoseRecordsMock
-    return glucoseRecordsMock
-}
+const {glucoseData} = useGlucoseRecords()
 
 // ---- нормы ----
 const MIN = 4

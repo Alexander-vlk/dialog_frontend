@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, type Ref} from 'vue'
+import {computed} from 'vue'
 import {Line} from 'vue-chartjs'
 import type {ChartData, ChartOptions} from 'chart.js'
 
@@ -13,9 +13,7 @@ import {
     Legend
 } from 'chart.js'
 
-import {glucoseRecordsMock} from '@/apps/data_tracking/mocks/glucose.ts'
-import {USE_MOCKS} from "@/common/constants.ts";
-import type {GlucoseData} from "@/apps/data_tracking/types.ts";
+import {useGlucoseRecords} from '@/apps/data_tracking/composables/useGlucoseRecords.ts'
 
 ChartJS.register(
     LineElement,
@@ -26,7 +24,7 @@ ChartJS.register(
     Legend
 )
 
-const glucoseData: Ref<Array<GlucoseData>> = ref(getGlucoseData())
+const {glucoseData} = useGlucoseRecords()
 
 const lastRecords = computed(() =>
     [...glucoseData.value]
@@ -68,13 +66,7 @@ const chartOptions: ChartOptions<'line'> = {
     }
 }
 
-function getGlucoseData() {
-    if (USE_MOCKS) {
-        return glucoseRecordsMock
-    }
     // todo: запрос на бек
-    return glucoseRecordsMock
-}
 </script>
 
 <template>
