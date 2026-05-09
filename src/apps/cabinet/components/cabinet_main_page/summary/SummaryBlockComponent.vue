@@ -8,17 +8,28 @@ import SidebarComponent
 </script>
 
 <template>
-<div class="grid grid-cols-1 gap-2 md:grid-cols-[2fr_2fr_1fr] m-2">
-    <div>
-        <ChartsContainerComponent />
+    <div
+        class="
+            grid
+            grid-cols-1
+            md:grid-cols-[2fr_2fr_1fr]
+            gap-2
+            m-2
+            items-stretch
+        "
+    >
+        <div>
+            <ChartsContainerComponent />
+        </div>
+
+        <div>
+            <HealthInfoComponent />
+        </div>
+
+        <div>
+            <SidebarComponent />
+        </div>
     </div>
-    <div>
-        <HealthInfoComponent />
-    </div>
-    <div>
-        <SidebarComponent />
-    </div>
-</div>
 </template>
 
 <style scoped>

@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {userAuthStore} from "@/common/stores/user.ts"
-import {computed, ref, type Ref} from "vue"
-import type {AppUser} from "@/apps/auth_service/types.ts"
-import router from "@/router.ts"
-import {readableGenderByGenderSlug} from "@/apps/cabinet/constants.ts"
-import formatDate from "@/common/utils/formatDate.ts"
-import {USE_MOCKS} from "@/common/constants.ts"
+import { userAuthStore } from '@/common/stores/user.ts'
+import { computed, ref, type Ref } from 'vue'
+import type { AppUser } from '@/apps/auth_service/types.ts'
+import router from '@/router.ts'
+import { readableGenderByGenderSlug } from '@/apps/cabinet/constants.ts'
+import formatDate from '@/common/utils/formatDate.ts'
+import { USE_MOCKS } from '@/common/constants.ts'
 import ProfileDataModalComponent
-    from "@/apps/cabinet/components/cabinet_main_page/profile_data/ProfileDataModalComponent.vue"
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/ProfileDataModalComponent.vue'
 import MedicationTakeModal
     from '@/apps/cabinet/components/cabinet_main_page/profile_data/MedicationTakeModal.vue'
 import IndicatorsModalComponent
     from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorsModalComponent.vue'
 import IndicatorFormModalComponent
     from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorFormModalComponent.vue'
-import {CheckCircleIcon, ExclamationCircleIcon} from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
 
 type Indicator = {
     title: string,
@@ -31,7 +31,7 @@ type Notification = {
 const userStore = userAuthStore()
 
 if (!userStore.user) {
-    router.push({name: 'login'})
+    router.push({ name: 'login' })
     throw new Error('User not authenticated')
 }
 
@@ -67,7 +67,7 @@ function closeIndicatorForm() {
 }
 
 function showNotification(type: Notification['type'], text: string) {
-    notification.value = {type, text}
+    notification.value = { type, text }
 
     if (notificationTimeout) {
         clearTimeout(notificationTimeout)
@@ -100,7 +100,7 @@ const formattedGender = computed(() =>
 
 const age = computed(() => ({
     value: 1,
-    postfix: 'год',
+    postfix: 'год'
 }))
 
 const formattedDiagnosisDate = computed(() => {
@@ -113,105 +113,209 @@ const formattedDiagnosisDate = computed(() => {
     <Transition name="notification">
         <div
             v-if="notification"
-            class="fixed top-4 right-4 z-[70] max-w-sm rounded-lg border bg-white px-4 py-3 shadow-lg flex items-start gap-3"
-            :class="notification.type === 'success' ? 'border-emerald-200 text-emerald-700' : 'border-red-200 text-red-700'"
+            class="
+                modal-overlay
+                fixed top-4 right-4 z-[70]
+                flex items-start gap-3
+                max-w-sm
+                rounded-xl
+                border
+                bg-white
+                px-4 py-3
+                shadow-sm
+            "
+            :class="
+                notification.type === 'success'
+                    ? 'border-emerald-200 text-emerald-700'
+                    : 'border-red-200 text-red-700'
+            "
         >
             <CheckCircleIcon
                 v-if="notification.type === 'success'"
                 class="w-5 h-5 shrink-0"
             />
+
             <ExclamationCircleIcon
                 v-else
                 class="w-5 h-5 shrink-0"
             />
-            <span class="text-sm font-medium">{{ notification.text }}</span>
+
+            <span class="text-sm font-medium">
+                {{ notification.text }}
+            </span>
         </div>
     </Transition>
-
-    <div class="w-full p-4 flex flex-col gap-4">
-
-        <div class="flex items-center gap-3">
+    <div
+        class="
+            h-full
+            rounded-2xl
+            border border-slate-200
+            bg-white
+            shadow-sm
+            p-5
+            flex flex-col
+        "
+    >
+        <div class="flex items-center gap-4">
             <img
                 :src="user.image || ''"
                 alt="Аватар"
-                class="w-20 h-20 rounded-full object-cover"
+                class="
+                    w-18 h-18
+                    rounded-2xl
+                    object-cover
+                    border border-slate-200
+                "
             />
-            <div class="flex flex-col">
-                <span class="font-bold text-lg">@{{ user.username }}</span>
-                <span class="text-gray-600 text-sm">
-                    {{ user.last_name }} {{ user.first_name }}
+
+            <div class="min-w-0">
+                <h2
+                    class="
+                        text-lg
+                        font-semibold
+                        text-slate-900
+                        truncate
+                    "
+                >
+                    @{{ user.username }}
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    {{ user.last_name }}
+                    {{ user.first_name }}
+                </p>
+            </div>
+        </div>
+        <div
+            class="
+                mt-5
+                rounded-2xl
+                bg-slate-50
+                p-4
+                space-y-3
+            "
+        >
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Пол
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ formattedGender }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Возраст
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ age.value }} {{ age.postfix }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Рост
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ user.height ? `${user.height} см` : 'Не указан' }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Вес
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ userWeight }} кг
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Диагноз
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ formattedDiagnosisDate }}
                 </span>
             </div>
         </div>
-        <div class="flex-1 bg-blue-500 text-white rounded-xl p-4 flex flex-col justify-between">
 
+        <div class="mt-auto pt-5">
             <div class="flex flex-col gap-2">
-                <div class="flex justify-between">
-                    <span>Пол</span>
-                    <span>{{ formattedGender }}</span>
-                </div>
+                <button
+                    @click="switchIndicatorsModal"
+                    class="
+                        w-full
+                        rounded-xl
+                        bg-blue-700
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-white
+                        transition
+                        hover:bg-blue-500
+                        hover:cursor-pointer
+                    "
+                >
+                    Внести показатели
+                </button>
+                <button
+                    @click="isModalOpen = true"
+                    class="
+                        w-full
+                        rounded-xl
+                        bg-blue-700
+                        text-white
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-blue-500
+                        transition
+                        hover:bg-blue-700
+                        hover:cursor-pointer
+                    "
+                >
+                    Принять лекарство
+                </button>
 
-                <div class="flex justify-between">
-                    <span>Возраст</span>
-                    <span>{{ age.value }} {{ age.postfix }}</span>
-                </div>
-
-                <div class="flex justify-between">
-                    <span>Рост</span>
-                    <span v-if="user.height">{{ user.height }} см</span>
-                    <span v-else>Не указан</span>
-                </div>
-
-                <div class="flex justify-between">
-                    <span>Вес</span>
-                    <span>{{ userWeight }} кг</span>
-                </div>
-
-                <div class="flex justify-between">
-                    <span>Дата диагноза</span>
-                    <span>{{ formattedDiagnosisDate }}</span>
-                </div>
+                <button
+                    @click="switchProfileModal"
+                    class="
+                        w-full
+                        rounded-xl
+                        border border-slate-200
+                        bg-white
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-slate-700
+                        transition
+                        hover:bg-slate-50
+                        hover:cursor-pointer
+                    "
+                >
+                    Открыть профиль
+                </button>
             </div>
-
         </div>
 
-        <div class="flex flex-col gap-2 mt-auto">
-            <button
-                @click="switchIndicatorsModal"
-                class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            >
-                Внести показатели
-            </button>
-
-            <button
-                @click="isModalOpen = true"
-                class="w-full bg-green-500 hover:bg-green-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            >
-                Принять лекарство
-            </button>
-
-            <MedicationTakeModal
-                :visible="isModalOpen"
-                @close="isModalOpen = false"
-                @saved="handleMedicationSaved"
-                @error="handleSaveError"
-            />
-
-            <button
-                @click="switchProfileModal"
-                class="w-full bg-orange-500 hover:bg-orange-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            >
-                Открыть профиль
-            </button>
-        </div>
-
+        <MedicationTakeModal
+            :visible="isModalOpen"
+            @close="isModalOpen = false"
+            @saved="handleMedicationSaved"
+            @error="handleSaveError"
+        />
     </div>
-
     <ProfileDataModalComponent
         :visible="isProfileModalVisible"
         @close="switchProfileModal"
     />
-
     <IndicatorsModalComponent
         :visible="isIndicatorsModalVisible"
         @close="switchIndicatorsModal"

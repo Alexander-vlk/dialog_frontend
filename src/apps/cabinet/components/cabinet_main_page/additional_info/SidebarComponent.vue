@@ -4,26 +4,81 @@
 
 <template>
     <section
-        class="m-4 grid grid-cols-1 gap-2"
+        class="
+            rounded-2xl
+            p-3
+            flex flex-col gap-2
+        "
     >
         <RouterLink
-            class="block text-center bg-orange-500 hover:bg-orange-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            to="{ name: 'cabinet'}"
+            :to="{ name: 'cabinet' }"
+            class="
+                rounded-xl
+                px-4 py-3
+                text-center
+                text-sm font-medium
+                text-white
+                border border-slate-100
+                transition
+                bg-blue-500
+                hover:bg-blue-400
+            "
         >
             Детальные отчеты
         </RouterLink>
+
         <RouterLink
-            class="block text-center bg-orange-500 hover:bg-orange-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            to="{ name: 'cabinet'}"
+            :to="{ name: 'cabinet' }"
+            class="
+                rounded-xl
+                px-4 py-3
+                text-center
+                text-sm font-medium
+                text-white
+                border border-slate-100
+                transition
+                bg-blue-500
+                hover:bg-blue-400
+            "
         >
             Все показатели
         </RouterLink>
+
         <RouterLink
-            class="block text-center bg-blue-500 hover:bg-blue-400 text-white font-medium rounded-lg py-2 transition shadow-sm hover:cursor-pointer"
-            to="{ name: 'cabinet'}"
+            :to="{ name: 'cabinet' }"
+            class="
+                rounded-xl
+                px-4 py-3
+                text-center
+                text-sm font-medium
+                text-slate-700
+                bg-slate-50
+                transition
+                hover:bg-slate-400
+                hover:text-white
+            "
         >
             Сообщить об ошибке
         </RouterLink>
+        <RouterLink
+            :to="{ name: 'cabinet' }"
+            class="
+                rounded-xl
+                px-4 py-3
+                text-center
+                text-sm font-medium
+                text-slate-700
+                bg-slate-50
+                transition
+                hover:bg-slate-400
+                hover:text-white
+            "
+        >
+            Задать вопрос
+        </RouterLink>
+        <p class="my-4 mx-auto">
+            DiaLog - 2026 г.
+        </p>
     </section>
 </template>
 

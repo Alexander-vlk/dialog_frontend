@@ -7,13 +7,14 @@ import LastGlucoseRecordsChartComponent
 </script>
 
 <template>
-    <div>
-        <div class="flex flex-col gap-2">
-            <MealChartComponent />
-            <LastGlucoseRecordsChartComponent />
-        </div>
-        <div>
-
+    <div class="h-full">
+        <div class="flex h-full flex-col gap-2">
+            <div class="shrink-0">
+                <MealChartComponent />
+            </div>
+            <div class="flex-1 min-h-0">
+                <LastGlucoseRecordsChartComponent />
+            </div>
         </div>
     </div>
 </template>

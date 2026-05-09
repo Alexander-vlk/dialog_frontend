@@ -66,12 +66,11 @@ const chartOptions: ChartOptions<'line'> = {
     }
 }
 
-    // todo: запрос на бек
 </script>
 
 <template>
     <div
-        class="w-full max-w-xl items-center mx-auto p-4 flex flex-col gap-4 border border-2 border-blue-400 rounded-xl"
+        class="w-full h-full max-w-xl items-center mx-auto p-4 flex flex-col gap-4 rounded-xl"
     >
         <h3 class="font-semibold text-lg">Уровень сахара (последние 20 замеров)</h3>
 
