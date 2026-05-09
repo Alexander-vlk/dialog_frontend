@@ -5,7 +5,7 @@ import type { AppUser } from '@/apps/auth_service/types.ts'
 import router from '@/router.ts'
 import { readableGenderByGenderSlug } from '@/apps/cabinet/constants.ts'
 import formatDate from '@/common/utils/formatDate.ts'
-import { USE_MOCKS } from '@/common/constants.ts'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import ProfileDataModalComponent
     from '@/apps/cabinet/components/cabinet_main_page/profile_data/ProfileDataModalComponent.vue'
 import MedicationTakeModal
@@ -50,7 +50,7 @@ let notificationTimeout: ReturnType<typeof setTimeout> | null = null
 async function getUserWeight(): Promise<number> {
     try {
         const response = await api.get(
-            '/api/data_tracking/weight/last/',
+            '/api/data_tracking/weight/last/'
         )
         return response.data.value
     } catch (error) {
@@ -109,14 +109,24 @@ const formattedGender = computed(() =>
 )
 
 const age = computed(() => ({
-    value: getUserAge(user.value.birth_date || '0'),
-    postfix: getAgePostfix(getUserAge(user.value.birth_date || '0')),
+    value: getUserAge(user.value.birth_date || ''),
+    postfix: getAgePostfix(getUserAge(user.value.birth_date || ''))
 }))
 
 const formattedDiagnosisDate = computed(() => {
     if (!user.value.diagnosis_date) return 'Не указан'
     return formatDate(user.value.diagnosis_date)
 })
+
+const profileFields = computed(() =>
+    [
+        userStore.user?.first_name,
+        userStore.user?.last_name,
+        userStore.user?.phone_number,
+        userStore.user?.birth_date
+        // add whatever fields your profile has
+    ].some(field => !!field)
+)
 
 onMounted(async () => {
     userWeight.value = await getUserWeight()
@@ -225,7 +235,7 @@ onMounted(async () => {
                 </span>
 
                 <span class="text-sm font-medium text-slate-900">
-                    {{ age.value }} {{ age.postfix }}
+                    {{ age.value ? `${age.value} ${age.postfix}` : 'Не указан' }}
                 </span>
             </div>
 
@@ -245,7 +255,7 @@ onMounted(async () => {
                 </span>
 
                 <span class="text-sm font-medium text-slate-900">
-                    {{ userWeight }} кг
+                    {{ userWeight ? `${userWeight} кг` : 'Не указан' }}
                 </span>
             </div>
 
@@ -259,6 +269,23 @@ onMounted(async () => {
                 </span>
             </div>
         </div>
+
+        <p
+            v-if="!profileFields"
+            class="
+        text-center
+        text-orange-500
+        mt-5
+        bg-orange-100
+        rounded-xl
+        border border-2 border-orange-500
+        py-4
+        flex items-center justify-center gap-2
+    "
+        >
+            <ExclamationTriangleIcon class="h-7 font-bold" />
+            <span class="block">Заполните профиль</span>
+        </p>
 
         <div class="mt-auto pt-5">
             <div class="flex flex-col gap-2">

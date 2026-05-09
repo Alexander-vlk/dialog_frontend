@@ -28,7 +28,7 @@
         </RouterLink>
 
         <RouterLink
-            :to="{ name: 'cabinet' }"
+            :to="{ name: 'indicators' }"
             class="
                 rounded-xl
                 px-4 py-3

@@ -1,5 +1,6 @@
 export default function(birthDateString: string) {
     // Получить возраст пользователя на основе его даты рождения
+    if (birthDateString === '') return 0
     const today = new Date()
     const birthDate = new Date(birthDateString)
     let age = today.getFullYear() - birthDate.getFullYear()
