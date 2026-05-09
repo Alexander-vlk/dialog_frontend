@@ -160,10 +160,10 @@ async function submit() {
 
     isSubmitting.value = true
     submitError.value = ''
-
+    console.log(selectedMedication.value)
     try {
         await api.post('/api/data_tracking/medication_takes/', {
-            medication: selectedMedication.value,
+            medication_id: selectedMedication.value,
             dose: dose.value,
             taken_at: new Date(takenAt.value).toISOString(),
             comment: comment.value,
