@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/common/pages/Home.vue'
 import { authServiceRoutes } from '@/apps/auth_service/route.ts'
 import {cabinetRoutes} from "@/apps/cabinet/route.ts";
+import { dataTrackingRoutes } from '@/apps/data_tracking/route.ts'
 
 const routes = [
     {
@@ -12,6 +13,7 @@ const routes = [
     },
     ...authServiceRoutes,
     ...cabinetRoutes,
+    ...dataTrackingRoutes,
     {
         path: '/:pathMatch(.*)*',
         name: 'notFound',

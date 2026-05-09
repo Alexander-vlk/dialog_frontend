@@ -11,7 +11,7 @@
         "
     >
         <RouterLink
-            :to="{ name: 'cabinet' }"
+            :to="{ name: 'reports' }"
             class="
                 rounded-xl
                 px-4 py-3
