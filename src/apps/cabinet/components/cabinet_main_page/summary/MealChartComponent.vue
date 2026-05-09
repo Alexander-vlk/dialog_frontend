@@ -78,7 +78,7 @@ const mealChartOptions: ChartOptions<'pie'> = {
             </div>
             <div class="flex justify-between">
                 <span>Калории:</span>
-                <span>{{ averageMeal.calories }} г</span>
+                <span>{{ averageMeal.calories }}</span>
             </div>
         </div>
 

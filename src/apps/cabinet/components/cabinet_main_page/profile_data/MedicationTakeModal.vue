@@ -344,7 +344,6 @@ watch(
                             type="datetime-local"
                             class="w-full border border-gray-200 rounded-lg px-4 py-3 pr-12 text-gray-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                             :min="minDateTime"
-                            :max="maxDateTime"
                             required
                         />
                         <ClockIcon class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"/>

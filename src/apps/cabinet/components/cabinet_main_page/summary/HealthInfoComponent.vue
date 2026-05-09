@@ -1,69 +1,148 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import {
     ClipboardDocumentIcon,
     ArrowTrendingUpIcon,
     ArrowTrendingDownIcon,
 } from '@heroicons/vue/24/outline'
 
-const stats = [
+import api from '@/common/axios.ts'
+
+type Trend = 'up' | 'down' | 'stable'
+
+type StatItem = {
+    label: string
+    value: string
+    unit: string
+    trend: Trend
+}
+
+type NutritionItem = {
+    label: string
+    value: number | string
+}
+
+type AverageValueResponse = {
+    average: number | null
+}
+
+type PressureAverageResponse = {
+    avg_systolic: number | null
+    avg_diastolic: number | null
+}
+
+type WeightLastResponse = {
+    value: number
+}
+
+type MedicationTakeLastResponse = {
+    dose: number
+    medication: number
+}
+
+type MealsAverageResponse = {
+    average_calories: number | null
+    average_proteins: number | null
+    average_carbs: number | null
+    average_fats: number | null
+}
+
+const isLoading = ref(false)
+
+const glucoseAverage = ref<number | null>(null)
+const cholesterolAverage = ref<number | null>(null)
+const temperatureAverage = ref<number | null>(null)
+const hemoglobinAverage = ref<number | null>(null)
+
+const avgSystolic = ref<number | null>(null)
+const avgDiastolic = ref<number | null>(null)
+
+const weight = ref<number | null>(null)
+
+const nutritionData = ref<MealsAverageResponse | null>(null)
+
+const lastMedication = ref<MedicationTakeLastResponse | null>(null)
+
+function round(value: number | null, digits = 1): string {
+    if (value === null || value === undefined) {
+        return '—'
+    }
+
+    return Number(value).toFixed(digits)
+}
+
+const stats = computed<StatItem[]>(() => [
     {
         label: 'Глюкоза',
-        value: '6.1',
+        value: round(glucoseAverage.value),
         unit: 'ммоль/л',
         trend: 'down',
     },
     {
         label: 'Давление',
-        value: '124/82',
+        value:
+            avgSystolic.value !== null && avgDiastolic.value !== null
+                ? `${Math.round(avgSystolic.value)}/${Math.round(avgDiastolic.value)}`
+                : '—',
         unit: '',
         trend: 'stable',
     },
     {
         label: 'Вес',
-        value: '78',
+        value: weight.value !== null ? round(weight.value) : '—',
         unit: 'кг',
         trend: 'up',
     },
     {
         label: 'Температура',
-        value: '36.7',
+        value: round(temperatureAverage.value),
         unit: '°C',
         trend: 'stable',
     },
     {
         label: 'Холестерин',
-        value: '5.8',
+        value: round(cholesterolAverage.value),
         unit: 'ммоль/л',
         trend: 'up',
     },
     {
         label: 'Гемоглобин',
-        value: '138',
+        value: hemoglobinAverage.value !== null
+            ? Math.round(hemoglobinAverage.value).toString()
+            : '—',
         unit: 'г/л',
         trend: 'stable',
     },
-]
+])
 
-const nutrition = [
+const nutrition = computed<NutritionItem[]>(() => [
     {
         label: 'Ккал',
-        value: 2054,
+        value: nutritionData.value?.average_calories
+            ? Math.round(nutritionData.value.average_calories)
+            : '—',
     },
     {
         label: 'Б',
-        value: 79,
+        value: nutritionData.value?.average_proteins
+            ? Math.round(nutritionData.value.average_proteins)
+            : '—',
     },
     {
         label: 'Ж',
-        value: 62,
+        value: nutritionData.value?.average_fats
+            ? Math.round(nutritionData.value.average_fats)
+            : '—',
     },
     {
         label: 'У',
-        value: 210,
+        value: nutritionData.value?.average_carbs
+            ? Math.round(nutritionData.value.average_carbs)
+            : '—',
     },
-]
+])
 
-function getTrendIcon(trend: string) {
+function getTrendIcon(trend: Trend) {
     if (trend === 'up') {
         return ArrowTrendingUpIcon
     }
@@ -75,9 +154,74 @@ function getTrendIcon(trend: string) {
     return null
 }
 
-function copyData() {
-    console.log('copied')
+async function loadData() {
+    if (isLoading.value) return
+
+    isLoading.value = true
+
+    try {
+        const [
+            glucoseResponse,
+            pressureResponse,
+            weightResponse,
+            cholesterolResponse,
+            temperatureResponse,
+            hemoglobinResponse,
+            medicationResponse,
+            mealsResponse,
+        ] = await Promise.all([
+            api.get<AverageValueResponse>('/api/data_tracking/glucose/average/'),
+            api.get<PressureAverageResponse>('/api/data_tracking/pressure/average/'),
+            api.get<WeightLastResponse>('/api/data_tracking/weight/last/'),
+            api.get<AverageValueResponse>('/api/data_tracking/cholesterol/average/'),
+            api.get<AverageValueResponse>('/api/data_tracking/temperature/average/'),
+            api.get<AverageValueResponse>('/api/data_tracking/hemoglobin/average/'),
+            api.get<MedicationTakeLastResponse>('/api/data_tracking/medication_takes/last/'),
+            api.get<MealsAverageResponse>('/api/data_tracking/meals/average/'),
+        ])
+
+        glucoseAverage.value = glucoseResponse.data.average
+
+        avgSystolic.value = pressureResponse.data.avg_systolic
+        avgDiastolic.value = pressureResponse.data.avg_diastolic
+
+        weight.value = weightResponse.data.value
+
+        cholesterolAverage.value = cholesterolResponse.data.average
+        temperatureAverage.value = temperatureResponse.data.average
+        hemoglobinAverage.value = hemoglobinResponse.data.average
+
+        lastMedication.value = medicationResponse.data
+
+        nutritionData.value = mealsResponse.data
+    }
+    catch (error) {
+        console.error(error)
+    }
+    finally {
+        isLoading.value = false
+    }
 }
+
+async function copyData() {
+    const text = stats.value
+        .map((item) => `${item.label}: ${item.value} ${item.unit}`)
+        .join('\n')
+
+    await navigator.clipboard.writeText(text)
+}
+
+const lastMedicationText = computed(() => {
+    if (!lastMedication.value) {
+        return 'Нет данных'
+    }
+
+    return `${lastMedication.value.medication.name}, ${lastMedication.value.dose} мг`
+})
+
+onMounted(() => {
+    loadData()
+})
 </script>
 
 <template>
@@ -97,7 +241,7 @@ function copyData() {
                 </h2>
 
                 <p class="text-sm text-slate-500 mt-1">
-                    Последние показатели пользователя
+                    Основные показатели пользователя
                 </p>
             </div>
 
@@ -117,6 +261,14 @@ function copyData() {
                 />
             </button>
         </div>
+
+        <div
+            v-if="isLoading"
+            class="mt-4 text-sm text-slate-500"
+        >
+            Загрузка...
+        </div>
+
         <div class="grid grid-cols-4 gap-2 mt-5">
             <div
                 v-for="item in nutrition"
@@ -137,6 +289,7 @@ function copyData() {
                 </p>
             </div>
         </div>
+
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 mt-5">
             <div
                 v-for="item in stats"
@@ -190,10 +343,9 @@ function copyData() {
                 </p>
 
                 <p class="text-xs text-slate-500 mt-0.5">
-                    Метформин · 500 мг
+                    {{ lastMedicationText }}
                 </p>
             </div>
-
         </div>
     </div>
 </template>

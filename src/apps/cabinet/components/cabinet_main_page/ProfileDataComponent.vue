@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { userAuthStore } from '@/common/stores/user.ts'
-import { computed, ref, type Ref } from 'vue'
+import { computed, defineEmits, onMounted, ref, type Ref } from 'vue'
 import type { AppUser } from '@/apps/auth_service/types.ts'
 import router from '@/router.ts'
 import { readableGenderByGenderSlug } from '@/apps/cabinet/constants.ts'
@@ -15,6 +15,9 @@ import IndicatorsModalComponent
 import IndicatorFormModalComponent
     from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorFormModalComponent.vue'
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import api from '@/common/axios.ts'
+import getUserAge from '@/common/utils/getUserAge.ts'
+import getAgePostfix from '@/common/utils/getAgePostfix.ts'
 
 type Indicator = {
     title: string,
@@ -36,7 +39,7 @@ if (!userStore.user) {
 }
 
 const user: Ref<AppUser> = ref(userStore.user)
-const userWeight = ref(getUserWeight())
+const userWeight = ref(0)
 const isProfileModalVisible = ref(false)
 const isModalOpen = ref(false)
 const isIndicatorsModalVisible = ref(false)
@@ -44,9 +47,16 @@ const selectedIndicator = ref<Indicator | null>(null)
 const notification = ref<Notification | null>(null)
 let notificationTimeout: ReturnType<typeof setTimeout> | null = null
 
-function getUserWeight(): number {
-    if (USE_MOCKS) return 70
-    return 0
+async function getUserWeight(): Promise<number> {
+    try {
+        const response = await api.get(
+            '/api/data_tracking/weight/last/',
+        )
+        return response.data.value
+    } catch (error) {
+        console.error('Ошибка при получении веса:', error)
+        throw error
+    }
 }
 
 function switchProfileModal() {
@@ -99,13 +109,17 @@ const formattedGender = computed(() =>
 )
 
 const age = computed(() => ({
-    value: 1,
-    postfix: 'год'
+    value: getUserAge(user.value.birth_date || '0'),
+    postfix: getAgePostfix(getUserAge(user.value.birth_date || '0')),
 }))
 
 const formattedDiagnosisDate = computed(() => {
     if (!user.value.diagnosis_date) return 'Не указан'
     return formatDate(user.value.diagnosis_date)
+})
+
+onMounted(async () => {
+    userWeight.value = await getUserWeight()
 })
 </script>
 

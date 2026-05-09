@@ -63,7 +63,6 @@ const choicesLoading = ref<Record<string, boolean>>({})
 const choicesError = ref<Record<string, string>>({})
 const openChoiceName = ref<string | null>(null)
 
-const maxDateTime = computed(() => toDateTimeLocalValue(new Date()))
 const minDateTime = computed(() => {
     const date = new Date()
     date.setDate(date.getDate() - 14)
@@ -270,9 +269,10 @@ async function submit() {
         emit('saved')
         closeModal()
     }
-    catch {
-        submitError.value = 'РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ РїРѕРєР°Р·Р°С‚РµР»СЊ'
-        emit('error', 'РќРµ СѓРґР°Р»РѕСЃСЊ РІРЅРµСЃС‚Рё РїРѕРєР°Р·Р°С‚РµР»СЊ Р·РґРѕСЂРѕРІСЊСЏ')
+    catch (error) {
+        console.log(error)
+        submitError.value = 'Ошибка при сохранении данных. Попробуйте еще раз.'
+        emit('error', 'Ошибка при сохранении данных. Попробуйте еще раз.')
     }
     finally {
         isSubmitting.value = false
@@ -318,8 +318,8 @@ watch(
                     type="button"
                     @click="closeModal"
                     class="flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 cursor-pointer"
-                    aria-label="Р—Р°РєСЂС‹С‚СЊ"
-                    title="Р—Р°РєСЂС‹С‚СЊ"
+                    aria-label="back"
+                    title="back"
                 >
                     <ArrowLeftIcon class="w-5 h-5"/>
                 </button>
@@ -336,7 +336,6 @@ watch(
                             type="datetime-local"
                             class="w-full border border-gray-200 rounded-lg px-4 py-3 pr-12 text-gray-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
                             :min="minDateTime"
-                            :max="maxDateTime"
                             required
                         />
                         <ClockIcon class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"/>
@@ -410,7 +409,7 @@ watch(
                                     v-if="choicesLoading[field.name]"
                                     class="px-4 py-3 text-sm text-gray-500"
                                 >
-                                    Р—Р°РіСЂСѓР·РєР°...
+                                    ...
                                 </div>
                                 <div
                                     v-else-if="choicesError[field.name]"
@@ -472,7 +471,7 @@ watch(
                     class="bg-blue-500 hover:bg-blue-400 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-5 py-2 rounded-lg cursor-pointer transition"
                     :disabled="!canSubmit"
                 >
-                    {{ isSubmitting ? 'РЎРѕС…СЂР°РЅРµРЅРёРµ...' : 'Внести' }}
+                    {{ isSubmitting ? '...' : 'Внести' }}
                 </button>
             </div>
         </form>

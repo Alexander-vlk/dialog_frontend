@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {defineProps, defineEmits, computed, onMounted, onUnmounted, watch, type Ref, ref} from 'vue'
-import {ArrowLeftIcon, PencilIcon} from '@heroicons/vue/24/solid'
+import {ArrowLeftIcon} from '@heroicons/vue/24/solid'
 import type {AppUser} from "@/apps/auth_service/types.ts";
 import formatRussianPhone from "@/common/utils/formatRussianPhone.ts";
 import router from "@/router.ts";
@@ -35,7 +35,8 @@ function onBackgroundClick(e: MouseEvent) {
 }
 
 const formattedPhoneNumber = computed(() => {
-    const formattedPhone = formatRussianPhone(props.phoneNumber)
+    const phone = (user.value as any)?.phone || (user.value as any)?.phone_number || ''
+    const formattedPhone = formatRussianPhone(phone)
     if (formattedPhone.length === 1) {
         return null
     }
@@ -84,7 +85,7 @@ watch(
         v-if="visible"
         class="
             fixed inset-0 z-50
-            flex items-center justify-center
+            flex items-start md:items-center justify-center
             modal-overlay
             backdrop-blur-sm
             bg-white/30
@@ -100,7 +101,8 @@ watch(
                 w-full
                 max-w-3xl
                 flex flex-col
-                overflow-hidden
+                overflow-y-auto
+                max-h-[calc(100vh-4rem)]
             "
         >
             <div

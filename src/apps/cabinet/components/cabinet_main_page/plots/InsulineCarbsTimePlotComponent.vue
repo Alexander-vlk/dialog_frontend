@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
-import {Line} from 'vue-chartjs'
-import type {ChartData, ChartOptions} from 'chart.js'
+import { computed, ref, onMounted } from 'vue'
+import { Line } from 'vue-chartjs'
+import type { ChartData, ChartOptions } from 'chart.js'
 
 import {
     Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js'
+import api from '@/common/axios.ts'
 
 ChartJS.register(
     LineElement,
@@ -22,34 +23,117 @@ ChartJS.register(
     Legend
 )
 
+type MedicationTake = {
+    id: number
+    medication: number
+    taken_at: string
+    dose: number
+}
+
+type Meal = {
+    id: number
+    carbs: number
+    eaten_at: string
+}
+
+type Paginated<T> = {
+    count: number
+    next: string | null
+    previous: string | null
+    results: T[]
+}
+
 type RecordItem = {
     time: string
     insulin: number
     carbs: number
 }
 
-const records = ref<RecordItem[]>(generateMock())
+/**
+ * ===== STATE =====
+ */
 
-function generateMock(): RecordItem[] {
-    const now = new Date()
-    const data: RecordItem[] = []
+const records = ref<RecordItem[]>([])
+const isLoading = ref(false)
+const error = ref('')
 
-    for (let i = 0; i < 20; i++) {
-        const d = new Date(now.getTime() - (19 - i) * 60 * 60 * 1000)
-
-        data.push({
-            time: d.toISOString(),
-            insulin: Math.random() > 0.6 ? +(Math.random() * 6).toFixed(1) : 0,
-            carbs: Math.random() > 0.5 ? Math.floor(Math.random() * 80) : 0
-        })
-    }
-
-    return data
-}
+/**
+ * ===== HELPERS =====
+ */
 
 function formatTime(dateStr: string) {
     const date = new Date(dateStr)
     return `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
+}
+
+function normalizeTime(dateStr: string) {
+    return new Date(dateStr).getTime()
+}
+
+async function loadAllPages<T>(url: string): Promise<T[]> {
+    const all: T[] = []
+    let next: string | null = url
+
+    while (next) {
+        const response = await api.get<Paginated<T> | T[]>(next)
+        const data = response.data
+
+        if (Array.isArray(data)) {
+            all.push(...data)
+            break
+        }
+
+        all.push(...data.results)
+        next = data.next
+    }
+
+    return all
+}
+
+async function loadData() {
+    if (isLoading.value) return
+
+    isLoading.value = true
+    error.value = ''
+
+    try {
+        const [medications, meals] = await Promise.all([
+            loadAllPages<MedicationTake>('/api/data_tracking/medication_takes/'),
+            loadAllPages<Meal>('/api/data_tracking/meals/')
+        ])
+
+        const insulinMap = new Map<number, number>()
+        const carbsMap = new Map<number, number>()
+
+        for (const m of medications) {
+            const t = normalizeTime(m.taken_at)
+            insulinMap.set(t, (insulinMap.get(t) || 0) + m.dose)
+        }
+
+        for (const meal of meals) {
+            const t = normalizeTime(meal.eaten_at)
+            carbsMap.set(t, (carbsMap.get(t) || 0) + meal.carbs)
+        }
+
+        const allTimes = new Set([
+            ...insulinMap.keys(),
+            ...carbsMap.keys()
+        ])
+
+        const sorted = Array.from(allTimes).sort((a, b) => a - b)
+
+        records.value = sorted.map(t => ({
+            time: new Date(t).toISOString(),
+            insulin: insulinMap.get(t) || 0,
+            carbs: carbsMap.get(t) || 0
+        }))
+    }
+    catch (e) {
+        error.value = 'Ошибка загрузки данных'
+    }
+    finally {
+        isLoading.value = false
+    }
 }
 
 const chartData = computed<ChartData<'line'>>(() => ({
@@ -117,18 +201,28 @@ const chartOptions: ChartOptions<'line'> = {
         }
     }
 }
+
+onMounted(() => {
+    loadData()
+})
 </script>
 
 <template>
-    <div
-        class="w-full max-w-md mx-auto p-4 flex flex-col gap-4 rounded-xl"
-    >
+    <div class="w-full max-w-md mx-auto p-4 flex flex-col gap-4 rounded-xl">
         <h3 class="font-semibold text-lg">
             Инсулин и углеводы во времени
         </h3>
 
-        <div class="w-full h-64">
-            <Line :data="chartData" :options="chartOptions"/>
+        <div v-if="error" class="text-red-500 text-sm">
+            {{ error }}
+        </div>
+
+        <div v-if="isLoading" class="text-sm text-gray-500">
+            Загрузка...
+        </div>
+
+        <div class="w-full h-64" v-if="records.length">
+            <Line :data="chartData" :options="chartOptions" />
         </div>
     </div>
 </template>

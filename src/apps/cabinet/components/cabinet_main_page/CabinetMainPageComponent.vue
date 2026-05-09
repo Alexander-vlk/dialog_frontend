@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { provide, ref } from 'vue'
+
 import ProfileDataComponent
     from "@/apps/cabinet/components/cabinet_main_page/ProfileDataComponent.vue";
 import SummaryBlockComponent
@@ -14,14 +16,21 @@ import SidebarComponent
     from '@/apps/cabinet/components/cabinet_main_page/additional_info/SidebarComponent.vue'
 
 document.title = 'Личный кабинет'
+
+const refreshKey = ref(0)
+
+function reloadAllCharts() {
+    refreshKey.value++
+}
+
+provide('reloadCharts', reloadAllCharts)
+provide('refreshKey', refreshKey)
 </script>
 
 <template>
     <HeaderComponent />
 
     <div class="p-4 flex flex-col gap-4">
-
-        <!-- top grid -->
         <div
             class="
                 grid
@@ -39,13 +48,9 @@ document.title = 'Личный кабинет'
                 <SummaryBlockComponent class="h-full" />
             </div>
         </div>
-
-        <!-- plots -->
         <div class="w-full bg-white rounded-xl shadow-sm">
             <PlotsContainerComponent />
         </div>
-
-        <!-- bottom grid -->
         <div
             class="
                 grid

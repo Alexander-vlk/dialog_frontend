@@ -2,14 +2,11 @@
 import {computed} from 'vue'
 import {useGlucoseRecords} from '@/apps/data_tracking/composables/useGlucoseRecords.ts'
 
-// ---- data ----
 const {glucoseData} = useGlucoseRecords()
 
-// ---- нормы ----
 const MIN = 4
 const MAX = 10
 
-// ---- части дня ----
 type DayPart = 'night' | 'morning' | 'day' | 'evening'
 
 function getDayPart(date: Date): DayPart {
@@ -22,13 +19,12 @@ function getDayPart(date: Date): DayPart {
 }
 
 const labels: Record<DayPart, string> = {
-    night: 'Ночь (00–06)',
-    morning: 'Утро (06–12)',
-    day: 'День (12–18)',
-    evening: 'Вечер (18–24)'
+    night: 'Ночь (00–06 ч.)',
+    morning: 'Утро (06–12 ч.)',
+    day: 'День (12–18 ч.)',
+    evening: 'Вечер (18–24 ч.)'
 }
 
-// ---- агрегация ----
 const stats = computed(() => {
     const result: Record<DayPart, {high: number; low: number; total: number}> = {
         night: {high: 0, low: 0, total: 0},
@@ -50,7 +46,6 @@ const stats = computed(() => {
     return result
 })
 
-// ---- инсайты ----
 const insights = computed(() => {
     const items: string[] = []
 
@@ -67,7 +62,7 @@ const insights = computed(() => {
         }
 
         if (lowRate > 0.2) {
-            items.push(`Частые гипо — ${labels[part]}`)
+            items.push(`Часто низкий сахар — ${labels[part]}`)
         }
     })
 
@@ -81,11 +76,9 @@ const insights = computed(() => {
 
 <template>
     <div class="w-full h-full bg-white rounded-xl shadow-sm p-4 flex flex-col gap-4">
-
         <h3 class="font-semibold text-lg">
             Повторяющиеся паттерны
         </h3>
-
         <div class="flex flex-col gap-2">
             <div
                 v-for="(item, idx) in insights"
@@ -95,7 +88,6 @@ const insights = computed(() => {
                 {{ item }}
             </div>
         </div>
-
     </div>
 </template>
 
