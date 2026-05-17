@@ -29,11 +29,12 @@ export const userAuthStore = defineStore(
         function clearUser() {
             user.value = null
             localStorage.removeItem('user')
+            localStorage.removeItem('indicator_filters')
         }
 
         function logout() {
-            clearAccessToken()
             clearUser()
+            clearAccessToken()
         }
 
         return {
