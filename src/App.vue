@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import Header from "@/components/common/header/Header.vue";
-import Footer from '@/components/common/footer/Footer.vue'
-import PageLoader from '@/components/ui/PageLoader.vue'
+import Cookie from '@/common/components/ui/Cookie.vue'
 </script>
 
 <template>
-    <Header />
     <section
-        class="min-h-[80lvh]"
+        class="min-h-[80lvh] max-w-[1600px] mx-auto"
     >
         <RouterView />
+        <Cookie />
     </section>
-    <Footer />
-    <PageLoader />
 </template>
 
 <style scoped>

@@ -1,0 +1,386 @@
+<script setup lang="ts">
+import { userAuthStore } from '@/common/stores/user.ts'
+import { computed, defineEmits, onMounted, ref, type Ref } from 'vue'
+import type { AppUser } from '@/apps/auth_service/types.ts'
+import router from '@/router.ts'
+import { readableGenderByGenderSlug } from '@/apps/cabinet/constants.ts'
+import formatDate from '@/common/utils/formatDate.ts'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import ProfileDataModalComponent
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/ProfileDataModalComponent.vue'
+import MedicationTakeModal
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/MedicationTakeModal.vue'
+import IndicatorsModalComponent
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorsModalComponent.vue'
+import IndicatorFormModalComponent
+    from '@/apps/cabinet/components/cabinet_main_page/profile_data/IndicatorFormModalComponent.vue'
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import api from '@/common/axios.ts'
+import getUserAge from '@/common/utils/getUserAge.ts'
+import getAgePostfix from '@/common/utils/getAgePostfix.ts'
+
+type Indicator = {
+    title: string,
+    endpoint: string,
+    colorClass: string,
+    icon: object,
+}
+
+type Notification = {
+    type: 'success' | 'error',
+    text: string,
+}
+
+const userStore = userAuthStore()
+
+if (!userStore.user) {
+    router.push({ name: 'login' })
+    throw new Error('User not authenticated')
+}
+
+const user: Ref<AppUser> = ref(userStore.user)
+const userWeight = ref(0)
+const isProfileModalVisible = ref(false)
+const isModalOpen = ref(false)
+const isIndicatorsModalVisible = ref(false)
+const selectedIndicator = ref<Indicator | null>(null)
+const notification = ref<Notification | null>(null)
+let notificationTimeout: ReturnType<typeof setTimeout> | null = null
+
+async function getUserWeight(): Promise<number> {
+    try {
+        const response = await api.get(
+            '/api/data_tracking/weight/last/'
+        )
+        return response.data.value
+    } catch (error) {
+        console.error('Ошибка при получении веса:', error)
+        throw error
+    }
+}
+
+function switchProfileModal() {
+    isProfileModalVisible.value = !isProfileModalVisible.value
+}
+
+function switchIndicatorsModal() {
+    isIndicatorsModalVisible.value = !isIndicatorsModalVisible.value
+}
+
+function openIndicatorForm(indicator: Indicator) {
+    selectedIndicator.value = indicator
+    isIndicatorsModalVisible.value = false
+}
+
+function closeIndicatorForm() {
+    selectedIndicator.value = null
+}
+
+function showNotification(type: Notification['type'], text: string) {
+    notification.value = { type, text }
+
+    if (notificationTimeout) {
+        clearTimeout(notificationTimeout)
+    }
+
+    notificationTimeout = setTimeout(() => {
+        notification.value = null
+        notificationTimeout = null
+    }, 4000)
+}
+
+function handleIndicatorSaved() {
+    const indicatorTitle = selectedIndicator.value?.title || 'Показатель'
+    showNotification('success', `${indicatorTitle} успешно внесен`)
+    closeIndicatorForm()
+}
+
+function handleMedicationSaved() {
+    showNotification('success', 'Прием лекарства успешно внесен')
+    isModalOpen.value = false
+}
+
+function handleSaveError(message: string) {
+    showNotification('error', message)
+}
+
+const formattedGender = computed(() =>
+    readableGenderByGenderSlug[user.value.gender]
+)
+
+const age = computed(() => ({
+    value: getUserAge(user.value.birth_date || ''),
+    postfix: getAgePostfix(getUserAge(user.value.birth_date || ''))
+}))
+
+const formattedDiagnosisDate = computed(() => {
+    if (!user.value.diagnosis_date) return 'Не указан'
+    return formatDate(user.value.diagnosis_date)
+})
+
+const profileFields = computed(() =>
+    [
+        userStore.user?.first_name,
+        userStore.user?.last_name,
+        userStore.user?.phone_number,
+        userStore.user?.birth_date
+        // add whatever fields your profile has
+    ].some(field => !!field)
+)
+
+onMounted(async () => {
+    userWeight.value = await getUserWeight()
+})
+</script>
+
+<template>
+    <Transition name="notification">
+        <div
+            v-if="notification"
+            class="
+                modal-overlay
+                fixed top-4 right-4 z-[70]
+                flex items-start gap-3
+                max-w-sm
+                rounded-xl
+                border
+                bg-white
+                px-4 py-3
+                shadow-sm
+            "
+            :class="
+                notification.type === 'success'
+                    ? 'border-emerald-200 text-emerald-700'
+                    : 'border-red-200 text-red-700'
+            "
+        >
+            <CheckCircleIcon
+                v-if="notification.type === 'success'"
+                class="w-5 h-5 shrink-0"
+            />
+
+            <ExclamationCircleIcon
+                v-else
+                class="w-5 h-5 shrink-0"
+            />
+
+            <span class="text-sm font-medium">
+                {{ notification.text }}
+            </span>
+        </div>
+    </Transition>
+    <div
+        class="
+            h-full
+            rounded-2xl
+            border border-slate-200
+            bg-white
+            shadow-sm
+            p-5
+            flex flex-col
+        "
+    >
+        <div class="flex items-center gap-4">
+            <img
+                :src="user.image || ''"
+                alt="Аватар"
+                class="
+                    w-18 h-18
+                    rounded-2xl
+                    object-cover
+                    border border-slate-200
+                "
+            />
+
+            <div class="min-w-0">
+                <h2
+                    class="
+                        text-lg
+                        font-semibold
+                        text-slate-900
+                        truncate
+                    "
+                >
+                    @{{ user.username }}
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    {{ user.last_name }}
+                    {{ user.first_name }}
+                </p>
+            </div>
+        </div>
+        <div
+            class="
+                mt-5
+                rounded-2xl
+                bg-slate-50
+                p-4
+                space-y-3
+            "
+        >
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Пол
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ formattedGender }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Возраст
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ age.value ? `${age.value} ${age.postfix}` : 'Не указан' }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Рост
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ user.height ? `${user.height} см` : 'Не указан' }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Вес
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ userWeight ? `${userWeight} кг` : 'Не указан' }}
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-500">
+                    Диагноз
+                </span>
+
+                <span class="text-sm font-medium text-slate-900">
+                    {{ formattedDiagnosisDate }}
+                </span>
+            </div>
+        </div>
+
+        <p
+            v-if="!profileFields"
+            class="
+        text-center
+        text-orange-500
+        mt-5
+        bg-orange-100
+        rounded-xl
+        border border-2 border-orange-500
+        py-4
+        flex items-center justify-center gap-2
+    "
+        >
+            <ExclamationTriangleIcon class="h-7 font-bold" />
+            <span class="block">Заполните профиль</span>
+        </p>
+
+        <div class="mt-auto pt-5">
+            <div class="flex flex-col gap-2">
+                <button
+                    @click="switchIndicatorsModal"
+                    class="
+                        w-full
+                        rounded-xl
+                        bg-blue-700
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-white
+                        transition
+                        hover:bg-blue-500
+                        hover:cursor-pointer
+                    "
+                >
+                    Внести показатели
+                </button>
+                <button
+                    @click="isModalOpen = true"
+                    class="
+                        w-full
+                        rounded-xl
+                        bg-blue-700
+                        text-white
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-blue-500
+                        transition
+                        hover:bg-blue-700
+                        hover:cursor-pointer
+                    "
+                >
+                    Принять лекарство
+                </button>
+
+                <button
+                    @click="switchProfileModal"
+                    class="
+                        w-full
+                        rounded-xl
+                        border border-slate-200
+                        bg-white
+                        px-4 py-3
+                        text-sm
+                        font-medium
+                        text-slate-700
+                        transition
+                        hover:bg-slate-50
+                        hover:cursor-pointer
+                    "
+                >
+                    Открыть профиль
+                </button>
+            </div>
+        </div>
+
+        <MedicationTakeModal
+            :visible="isModalOpen"
+            @close="isModalOpen = false"
+            @saved="handleMedicationSaved"
+            @error="handleSaveError"
+        />
+    </div>
+    <ProfileDataModalComponent
+        :visible="isProfileModalVisible"
+        @close="switchProfileModal"
+    />
+    <IndicatorsModalComponent
+        :visible="isIndicatorsModalVisible"
+        @close="switchIndicatorsModal"
+        @select="openIndicatorForm"
+    />
+
+    <IndicatorFormModalComponent
+        :visible="Boolean(selectedIndicator)"
+        :indicator="selectedIndicator"
+        @close="closeIndicatorForm"
+        @saved="handleIndicatorSaved"
+        @error="handleSaveError"
+    />
+</template>
+
+<style scoped>
+.notification-enter-active,
+.notification-leave-active {
+    transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.notification-enter-from,
+.notification-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+</style>
