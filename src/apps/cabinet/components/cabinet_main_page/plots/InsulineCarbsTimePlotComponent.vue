@@ -10,8 +10,9 @@ import {
     LinearScale,
     CategoryScale,
     Tooltip,
-    Legend
+    Legend,
 } from 'chart.js'
+
 import api from '@/common/axios.ts'
 
 ChartJS.register(
@@ -20,15 +21,8 @@ ChartJS.register(
     LinearScale,
     CategoryScale,
     Tooltip,
-    Legend
+    Legend,
 )
-
-type MedicationTake = {
-    id: number
-    medication: number
-    taken_at: string
-    dose: number
-}
 
 type Meal = {
     id: number
@@ -45,21 +39,12 @@ type Paginated<T> = {
 
 type RecordItem = {
     time: string
-    insulin: number
     carbs: number
 }
-
-/**
- * ===== STATE =====
- */
 
 const records = ref<RecordItem[]>([])
 const isLoading = ref(false)
 const error = ref('')
-
-/**
- * ===== HELPERS =====
- */
 
 function formatTime(dateStr: string) {
     const date = new Date(dateStr)
@@ -70,12 +55,29 @@ function normalizeTime(dateStr: string) {
     return new Date(dateStr).getTime()
 }
 
+function getLastWeekParams() {
+    const dateEnd = new Date()
+    const dateStart = new Date()
+
+    dateStart.setDate(dateStart.getDate() - 7)
+
+    return {
+        date_start: dateStart.toISOString().split('T')[0],
+        date_end: dateEnd.toISOString().split('T')[0],
+    }
+}
+
 async function loadAllPages<T>(url: string): Promise<T[]> {
     const all: T[] = []
     let next: string | null = url
 
+    const params = getLastWeekParams()
+
     while (next) {
-        const response = await api.get<Paginated<T> | T[]>(next)
+        const response = await api.get<Paginated<T> | T[]>(next, {
+            params: next === url ? params : undefined,
+        })
+
         const data = response.data
 
         if (Array.isArray(data)) {
@@ -97,41 +99,31 @@ async function loadData() {
     error.value = ''
 
     try {
-        const [medications, meals] = await Promise.all([
-            loadAllPages<MedicationTake>('/api/data_tracking/medication_takes/'),
-            loadAllPages<Meal>('/api/data_tracking/meals/')
-        ])
+        const meals = await loadAllPages<Meal>(
+            '/api/data_tracking/meals/',
+        )
 
-        const insulinMap = new Map<number, number>()
         const carbsMap = new Map<number, number>()
 
-        for (const m of medications) {
-            const t = normalizeTime(m.taken_at)
-            insulinMap.set(t, (insulinMap.get(t) || 0) + m.dose)
-        }
-
         for (const meal of meals) {
-            const t = normalizeTime(meal.eaten_at)
-            carbsMap.set(t, (carbsMap.get(t) || 0) + meal.carbs)
+            const time = normalizeTime(meal.eaten_at)
+
+            carbsMap.set(
+                time,
+                (carbsMap.get(time) || 0) + meal.carbs,
+            )
         }
 
-        const allTimes = new Set([
-            ...insulinMap.keys(),
-            ...carbsMap.keys()
-        ])
+        const sortedTimes = Array.from(carbsMap.keys())
+            .sort((a, b) => a - b)
 
-        const sorted = Array.from(allTimes).sort((a, b) => a - b)
-
-        records.value = sorted.map(t => ({
-            time: new Date(t).toISOString(),
-            insulin: insulinMap.get(t) || 0,
-            carbs: carbsMap.get(t) || 0
+        records.value = sortedTimes.map(time => ({
+            time: new Date(time).toISOString(),
+            carbs: carbsMap.get(time) || 0,
         }))
-    }
-    catch (e) {
+    } catch {
         error.value = 'Ошибка загрузки данных'
-    }
-    finally {
+    } finally {
         isLoading.value = false
     }
 }
@@ -140,24 +132,14 @@ const chartData = computed<ChartData<'line'>>(() => ({
     labels: records.value.map(r => formatTime(r.time)),
     datasets: [
         {
-            label: 'Инсулин (ЕД)',
-            data: records.value.map(r => r.insulin),
-            borderColor: '#8b5cf6',
-            backgroundColor: '#8b5cf6',
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y'
-        },
-        {
             label: 'Углеводы (г)',
             data: records.value.map(r => r.carbs),
             borderColor: '#f59e0b',
             backgroundColor: '#f59e0b',
             tension: 0.35,
             pointRadius: 3,
-            yAxisID: 'y1'
-        }
-    ]
+        },
+    ],
 }))
 
 const chartOptions: ChartOptions<'line'> = {
@@ -165,41 +147,27 @@ const chartOptions: ChartOptions<'line'> = {
     maintainAspectRatio: false,
     interaction: {
         mode: 'index',
-        intersect: false
+        intersect: false,
     },
     plugins: {
         legend: {
-            display: true
-        }
+            display: true,
+        },
     },
     scales: {
         x: {
             grid: {
-                display: false
-            }
+                display: false,
+            },
         },
         y: {
-            type: 'linear',
-            position: 'left',
-            title: {
-                display: true,
-                text: 'Инсулин'
-            },
-            beginAtZero: true
-        },
-        y1: {
-            type: 'linear',
-            position: 'right',
-            title: {
-                display: true,
-                text: 'Углеводы'
-            },
             beginAtZero: true,
-            grid: {
-                drawOnChartArea: false
-            }
-        }
-    }
+            title: {
+                display: true,
+                text: 'Углеводы (г)',
+            },
+        },
+    },
 }
 
 onMounted(() => {
@@ -210,7 +178,7 @@ onMounted(() => {
 <template>
     <div class="w-full max-w-md mx-auto p-4 flex flex-col gap-4 rounded-xl">
         <h3 class="font-semibold text-lg">
-            Инсулин и углеводы во времени
+            Углеводы за последнюю неделю
         </h3>
 
         <div v-if="error" class="text-red-500 text-sm">
@@ -221,8 +189,12 @@ onMounted(() => {
             Загрузка...
         </div>
 
-        <div class="w-full h-64" v-if="records.length">
+        <div v-if="records.length" class="w-full h-64">
             <Line :data="chartData" :options="chartOptions" />
+        </div>
+
+        <div v-else-if="!isLoading" class="text-sm text-gray-500">
+            Нет данных за последнюю неделю
         </div>
     </div>
 </template>

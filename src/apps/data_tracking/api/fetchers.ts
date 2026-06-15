@@ -9,12 +9,30 @@ function isPaginatedGlucoseResponse(
 }
 
 export async function fetchGlucoseRecords(): Promise<GlucoseData[]> {
-    let url: string | null = '/api/data_tracking/glucose/'
     const records: GlucoseData[] = []
 
+    const dateEnd = new Date()
+    const dateStart = new Date()
+    dateStart.setDate(dateStart.getDate() - 7)
+
+    const formatDate = (date: Date): string =>
+        date.toISOString().split('T')[0]
+
+    const params = {
+        date_start: formatDate(dateStart),
+        date_end: formatDate(dateEnd),
+    }
+
+    let url: string | null = '/api/data_tracking/glucose/'
+
     while (url) {
-        const response: AxiosResponse<GlucoseData[] | PaginatedResponse<GlucoseData>> = await api.get(url)
-        const data: GlucoseData[] | PaginatedResponse<GlucoseData> = response.data
+        const response: AxiosResponse<
+            GlucoseData[] | PaginatedResponse<GlucoseData>
+        > = await api.get(url, {
+            params: url === '/api/data_tracking/glucose/' ? params : undefined,
+        })
+
+        const data = response.data
 
         if (Array.isArray(data)) {
             records.push(...data)
@@ -24,8 +42,7 @@ export async function fetchGlucoseRecords(): Promise<GlucoseData[]> {
         if (isPaginatedGlucoseResponse(data)) {
             records.push(...data.results)
             url = data.next
-        }
-        else {
+        } else {
             break
         }
     }
