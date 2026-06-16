@@ -24,13 +24,13 @@ export default defineConfig({
         port: 8300,
         strictPort: true,
         open: false,
-        allowedHosts: ['dialog.com'],
+        allowedHosts: ['dialog.com', 'diabetes-dialog.ru'],
         watch: {
             usePolling: true,
         },
         hmr: {
             protocol: 'wss',
-            host: 'dialog.com',
+            host: 'diabetes-dialog.ru',
             clientPort: 443,
         },
     },
