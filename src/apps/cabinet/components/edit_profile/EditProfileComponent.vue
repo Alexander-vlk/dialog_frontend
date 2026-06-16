@@ -64,14 +64,11 @@ const canSubmit = computed(() => {
 })
 
 const saveProfile = async () => {
-    console.log('submit')
-
     if (!canSubmit.value) {
         return
     }
 
     if (!userStore.user) {
-        console.error('User not found')
         return
     }
 
@@ -86,7 +83,7 @@ const saveProfile = async () => {
             first_name: form.first_name,
             last_name: form.last_name,
             patronymic_name: form.patronymic_name,
-            email: form.email || null,
+            email: form.email || '',
             phone_number: form.phone_number,
             gender: form.gender || null,
             height: form.height,
