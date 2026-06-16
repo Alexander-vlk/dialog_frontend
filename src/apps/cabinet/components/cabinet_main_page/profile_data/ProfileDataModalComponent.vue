@@ -262,42 +262,42 @@ watch(
                         </p>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <span class="text-sm font-semibold text-gray-500 uppercase">
-                        Сопутствующие заболевания
-                    </span>
-                    <div
-                        v-if="user.diseases?.length"
-                        class="flex flex-wrap gap-2"
-                    >
-                        <span
-                            v-for="disease in user.diseases"
-                            :key="disease.id"
-                            class="
-                                px-3 py-2
-                                rounded-lg
-                                bg-blue-50
-                                border border-blue-100
-                                text-sm
-                                text-blue-700
-                                font-medium
-                            "
-                        >
-                            {{ disease.name }}
-                        </span>
-                    </div>
-                    <div
-                        v-else
-                        class="
-                            rounded-lg
-                            border border-dashed border-gray-200
-                            px-4 py-4
-                            text-sm text-gray-500
-                        "
-                    >
-                        Заболевания не указаны
-                    </div>
-                </div>
+<!--                <div class="flex flex-col gap-2">-->
+<!--                    <span class="text-sm font-semibold text-gray-500 uppercase">-->
+<!--                        Сопутствующие заболевания-->
+<!--                    </span>-->
+<!--                    <div-->
+<!--                        v-if="user.diseases?.length"-->
+<!--                        class="flex flex-wrap gap-2"-->
+<!--                    >-->
+<!--                        <span-->
+<!--                            v-for="disease in user.diseases"-->
+<!--                            :key="disease.id"-->
+<!--                            class="-->
+<!--                                px-3 py-2-->
+<!--                                rounded-lg-->
+<!--                                bg-blue-50-->
+<!--                                border border-blue-100-->
+<!--                                text-sm-->
+<!--                                text-blue-700-->
+<!--                                font-medium-->
+<!--                            "-->
+<!--                        >-->
+<!--                            {{ disease.name }}-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                    <div-->
+<!--                        v-else-->
+<!--                        class="-->
+<!--                            rounded-lg-->
+<!--                            border border-dashed border-gray-200-->
+<!--                            px-4 py-4-->
+<!--                            text-sm text-gray-500-->
+<!--                        "-->
+<!--                    >-->
+<!--                        Заболевания не указаны-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div
                 class="
