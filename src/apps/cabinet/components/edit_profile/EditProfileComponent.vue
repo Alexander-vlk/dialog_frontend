@@ -16,7 +16,7 @@ interface ProfileForm {
     patronymic_name: string
     email: string
     phone_number: string
-    gender: 'male' | 'female' | ''
+    gender: 'male' | 'female' | 'undefined'
     height: number | null
     birth_date: string
     diagnosis_date: string
@@ -37,7 +37,7 @@ const form = reactive<ProfileForm>({
     patronymic_name: userStore.user?.patronymic_name ?? '',
     email: userStore.user?.email ?? '',
     phone_number: userStore.user?.phone_number ?? '',
-    gender: (userStore.user?.gender as 'male' | 'female' | '') ?? '',
+    gender: (userStore.user?.gender as 'male' | 'female' | 'undefined') ?? 'undefined',
     height: userStore.user?.height ?? null,
     birth_date: userStore.user?.birth_date ?? '',
     diagnosis_date: userStore.user?.diagnosis_date ?? '',
@@ -87,7 +87,7 @@ const saveProfile = async () => {
             patronymic_name: form.patronymic_name,
             email: form.email || '',
             phone_number: form.phone_number,
-            gender: form.gender || '',
+            gender: form.gender || 'undefined',
             height: form.height,
             birth_date: form.birth_date || null,
             diagnosis_date: form.diagnosis_date || null,
