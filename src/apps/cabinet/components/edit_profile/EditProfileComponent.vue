@@ -7,6 +7,8 @@ import api from '@/common/axios.ts'
 import HeaderComponent from '@/common/components/ui/HeaderComponent.vue'
 import { userAuthStore } from '@/common/stores/user.ts'
 
+document.title = 'Редактировать профиль'
+
 interface ProfileForm {
     username: string
     first_name: string
@@ -85,7 +87,7 @@ const saveProfile = async () => {
             patronymic_name: form.patronymic_name,
             email: form.email || '',
             phone_number: form.phone_number,
-            gender: form.gender || null,
+            gender: form.gender || '',
             height: form.height,
             birth_date: form.birth_date || null,
             diagnosis_date: form.diagnosis_date || null,
