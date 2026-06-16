@@ -62,16 +62,6 @@ const fireEmoji = computed(() => {
         return '⭕'
     }
 
-    const days = streak.value.days_count
-
-    if (days >= 30) {
-        return '🔥🔥🔥'
-    }
-
-    if (days >= 7) {
-        return '🔥🔥'
-    }
-
     return '🔥'
 })
 
