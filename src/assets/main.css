@@ -1,2 +1,12 @@
 @import 'tailwindcss';
 @import './base.css';
+
+@layer base {
+    :root, html, body {
+        color-scheme: light !important;
+    }
+}
+
+@custom-variant dark {
+    /* отключено */
+}
